@@ -5,17 +5,10 @@ class proyectoController extends Controller
     public function __construct() {
         parent::__construct();
         Session::acceso('admin');
-        $this->_raza = $this->loadModel('proyecto');
-        
         $this->_estado = $this->loadModel('estado');
         $this->_categoria = $this->loadModel('categoria');
         $this->_sector = $this->loadModel('sector');
-        /*
-        $this->_vacuna = $this->loadModel('vacuna');
-        $this->_servicio = $this->loadModel('servicio');
-        $this->_vacunacion = $this->loadModel('vacunacion');
-        $this->_servicioMascota = $this->loadModel('serviciomascota');
-        */
+        
     }
     
     public function index()
@@ -61,11 +54,12 @@ class proyectoController extends Controller
 
         $datos = array();
 
-        $datos['Codigo'] = $obj->getId();
+        $datos['Cod Bppim'] = $obj->getCodigoBppim();
         $datos['Nombre'] = $obj->getNombre();
-        $datos['Descripcion'] = $obj->getDescripcion();
-        $datos['Raza'] = $obj->getRaza()->getDescripcion();
-        $datos['Cliente'] = $obj->getCliente()->getNombre();
+        $datos['Proponente'] = $obj->getProponente();
+        $datos['Categoria'] = $obj->getCategoria()->getDescripcion();
+        $datos['Sector'] = $obj->getSector()->getDescripcion();
+        $datos['Estado'] = $obj->getEstado()->getDescripcion();
 
         $arrayRta['datos'] = $datos;
         echo json_encode($arrayRta);
