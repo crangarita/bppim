@@ -1,0 +1,36 @@
+<div class="panel panel-primary">
+	  <div class="panel-heading">
+			<h3 class="panel-title"><?php echo ucwords(strtolower($this->_presentRequest->getMetodo())); ?></h3>
+	  </div>
+	  <div class="panel-body">
+
+	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Descripcion: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<textarea class="form-control required" name="descripcion"><?php if(isset($this->dato)){ echo $this->dato->getDescripcion();} ?></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Entidad: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+				<?php $entidad = ''; ?>
+				<?php if(isset($this->dato)){ $entidad = $this->dato->getEntidad()->getId(); } ?>
+					<?php echo $this->combobox("entidad", "Seleccione...", $this->entidades, $entidad, "getId", "getNombre", "class='form-control required show-tick' data-live-search='true' ","getNombre"); ?>
+				</div>
+			</div>
+
+			<p class="text-right comentario">
+				Los campos marcados con <span class="span">*</span> son obligatorios.
+			</p>
+
+			<button type="submit" class="btn btn-primary" ><?php echo ucwords($this->_presentRequest->getMetodo()); ?> </button> 
+			<a class="btn btn-primary" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>">Listado</a>
+
+		</form>
+
+	  </div>
+</div>
+

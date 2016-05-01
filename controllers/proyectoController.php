@@ -88,10 +88,9 @@ class proyectoController extends Controller
         $this->_model = $this->loadModel($this->_presentRequest->getControlador());
 
         $this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Actualizar';
-        $this->_view->razas = $this->_raza->resultList();
-        $this->_view->clientes = $this->_cliente->resultList();
-        $this->_view->vacunas = $this->_vacuna->findBy(array('veterinario' => Session::get('usuario')));
-        $this->_view->servicios = $this->_servicio->findBy(array('veterinario' => Session::get('usuario')));
+        $this->_view->estados = $this->_estado->resultList();
+        $this->_view->categorias = $this->_categoria->resultList();
+        $this->_view->sectores = $this->_sector->resultList();
 
         if($this->filtrarInt($id)<1){
             Session::set('error','Registro No Encontrado.');
