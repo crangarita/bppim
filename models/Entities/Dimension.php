@@ -6,12 +6,12 @@
 namespace Entities;
 
 /**
- * Categoria
+ * Dimension
  *
- * @Table(name="categoria")
+ * @Table(name="dimension")
  * @Entity
  */
-class Categoria
+class Dimension
 {
 
 function __construct() {}
@@ -28,7 +28,7 @@ function __construct() {}
     /**
      * @var string
      *
-     * @Column(name="descripcion", type="string", length=100, nullable=false)
+     * @Column(name="descripcion", type="string", length=150, nullable=false)
      */
     private $descripcion;
 
@@ -37,7 +37,7 @@ function __construct() {}
      * Set id
      *
      * @param integer $id
-     * @return Categoria
+     * @return Dimension
      */
     public function setId($id)
     {
@@ -60,7 +60,7 @@ function __construct() {}
      * Set descripcion
      *
      * @param string $descripcion
-     * @return Categoria
+     * @return Dimension
      */
     public function setDescripcion($descripcion)
     {

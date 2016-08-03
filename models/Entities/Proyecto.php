@@ -1,7 +1,7 @@
 <?php
 
 
-/* Date: 24/04/2016 22:45:47 */
+/* Date: 02/08/2016 19:03:56 */
 
 namespace Entities;
 
@@ -28,7 +28,7 @@ function __construct() {}
     /**
      * @var string
      *
-     * @Column(name="codigobppim", type="string", length=15, nullable=false)
+     * @Column(name="codigobppim", type="string", length=15, nullable=true)
      */
     private $codigobppim;
 
@@ -42,16 +42,72 @@ function __construct() {}
     /**
      * @var string
      *
-     * @Column(name="proponente", type="string", length=50, nullable=false)
+     * @Column(name="proponente", type="string", length=50, nullable=true)
      */
     private $proponente;
 
     /**
      * @var \DateTime
      *
-     * @Column(name="fechacreacion", type="datetime", nullable=false)
+     * @Column(name="fechacreacion", type="datetime", nullable=true)
      */
     private $fechacreacion;
+
+    /**
+     * @var string
+     *
+     * @Column(name="valor", type="decimal", precision=12, scale=0, nullable=true)
+     */
+    private $valor;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="numbeneficiario", type="integer", nullable=true)
+     */
+    private $numbeneficiario;
+
+    /**
+     * @var string
+     *
+     * @Column(name="justificacion", type="text", nullable=true)
+     */
+    private $justificacion;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="dimension", type="integer", nullable=true)
+     */
+    private $dimension;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="vigencia", type="integer", nullable=true)
+     */
+    private $vigencia;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="meses", type="integer", nullable=true)
+     */
+    private $meses;
+
+    /**
+     * @var \DateTime
+     *
+     * @Column(name="fecharadicacion", type="date", nullable=true)
+     */
+    private $fecharadicacion;
+
+    /**
+     * @var string
+     *
+     * @Column(name="observacion", type="text", nullable=true)
+     */
+    private $observacion;
 
     /**
      * @var \Categoria
@@ -197,6 +253,190 @@ function __construct() {}
     public function getFechacreacion()
     {
         return $this->fechacreacion;
+    }
+
+    /** 
+     * Set valor
+     *
+     * @param string $valor
+     * @return Proyecto
+     */
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
+
+        return $this;
+    }
+
+    /**
+     * Get valor
+     *
+     * @return string 
+     */
+    public function getValor()
+    {
+        return $this->valor;
+    }
+
+    /** 
+     * Set numbeneficiario
+     *
+     * @param integer $numbeneficiario
+     * @return Proyecto
+     */
+    public function setNumbeneficiario($numbeneficiario)
+    {
+        $this->numbeneficiario = $numbeneficiario;
+
+        return $this;
+    }
+
+    /**
+     * Get numbeneficiario
+     *
+     * @return integer 
+     */
+    public function getNumbeneficiario()
+    {
+        return $this->numbeneficiario;
+    }
+
+    /** 
+     * Set justificacion
+     *
+     * @param string $justificacion
+     * @return Proyecto
+     */
+    public function setJustificacion($justificacion)
+    {
+        $this->justificacion = $justificacion;
+
+        return $this;
+    }
+
+    /**
+     * Get justificacion
+     *
+     * @return string 
+     */
+    public function getJustificacion()
+    {
+        return $this->justificacion;
+    }
+
+    /** 
+     * Set dimension
+     *
+     * @param integer $dimension
+     * @return Proyecto
+     */
+    public function setDimension($dimension)
+    {
+        $this->dimension = $dimension;
+
+        return $this;
+    }
+
+    /**
+     * Get dimension
+     *
+     * @return integer 
+     */
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
+
+    /** 
+     * Set vigencia
+     *
+     * @param integer $vigencia
+     * @return Proyecto
+     */
+    public function setVigencia($vigencia)
+    {
+        $this->vigencia = $vigencia;
+
+        return $this;
+    }
+
+    /**
+     * Get vigencia
+     *
+     * @return integer 
+     */
+    public function getVigencia()
+    {
+        return $this->vigencia;
+    }
+
+    /** 
+     * Set meses
+     *
+     * @param integer $meses
+     * @return Proyecto
+     */
+    public function setMeses($meses)
+    {
+        $this->meses = $meses;
+
+        return $this;
+    }
+
+    /**
+     * Get meses
+     *
+     * @return integer 
+     */
+    public function getMeses()
+    {
+        return $this->meses;
+    }
+
+    /** 
+     * Set fecharadicacion
+     *
+     * @param \DateTime $fecharadicacion
+     * @return Proyecto
+     */
+    public function setFecharadicacion($fecharadicacion)
+    {
+        $this->fecharadicacion = $fecharadicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fecharadicacion
+     *
+     * @return \DateTime 
+     */
+    public function getFecharadicacion()
+    {
+        return $this->fecharadicacion;
+    }
+
+    /** 
+     * Set observacion
+     *
+     * @param string $observacion
+     * @return Proyecto
+     */
+    public function setObservacion($observacion)
+    {
+        $this->observacion = $observacion;
+
+        return $this;
+    }
+
+    /**
+     * Get observacion
+     *
+     * @return string 
+     */
+    public function getObservacion()
+    {
+        return $this->observacion;
     }
 
     /** 

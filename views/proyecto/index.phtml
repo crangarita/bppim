@@ -21,6 +21,8 @@
 								<td class="text-center">
 									<a data-id="<?php echo $dato->getId(); ?>" title="Detalles" class="this-vermas" href="#"><i class="fa fa-search-plus"></i></a>
 									<a title="Actualizar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>actualizar/<?php echo $dato->getId(); ?>/"><i class="fa fa-pencil-square-o"></i></a>
+									<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
+									<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
 								</td>
 							</tr>
 						<?php } ?>
@@ -30,11 +32,129 @@
 	  </div>
 </div>
 
+<div class="modal fade" id="modal-asignar">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Asignar Proyecto</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" id="form-asignarProyecto" action="<?php echo BASE_URL; ?>proyecto/asignarProyecto/" class="form-horizontal" method="post" enctype="multipart/form-data">
+
+					<input type="hidden" name="proyecto" value="">
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Entidad: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<?php echo $this->combobox("entidad", "Seleccione...", $this->entidades, "", "getId", "getNombre", "class='form-control required show-tick' data-live-search='true' ","getNombre"); ?>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Asign: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaAsignacion" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Limit: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaLimite" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observaci&oacute;n: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<textarea class="form-control" name="observacion"></textarea>
+						</div>
+					</div>
+
+				</form>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="asignarProyecto">Asignar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-concluir">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Concluir Proyecto</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" id="form-concluirProyecto" action="<?php echo BASE_URL; ?>proyecto/concluirProyecto/" class="form-horizontal" method="post" enctype="multipart/form-data">
+
+					<input type="hidden" name="proyecto" value="">
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Estado: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<?php echo $this->combobox("estado", "Seleccione...", $this->estados, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Concluir: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<input name="fechaConcluir" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observaci&oacute;n: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<textarea class="form-control" name="observacion"></textarea>
+						</div>
+					</div>
+
+				</form>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="concluirProyecto">Asignar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
 		$('.this-vermas').click(function(event) {
 	        event.preventDefault();
 	        motrarGet($(this),BASE.url+'<?php echo $this->_presentRequest->getControlador(); ?>/get/');
+	    });
+	});
+</script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$('.this-asignar').click(function(event) {
+			event.preventDefault();
+	        var id = $(this).attr('data-id');
+	        $("#form-asignarProyecto input[name=proyecto]").val(id);
+	        $("#modal-asignar").modal();
+	    });
+	    $('#asignarProyecto').click(function(event) {
+			event.preventDefault();
+			$("#form-asignarProyecto").submit();
+	    });
+	    $('.this-concluir').click(function(event) {
+			event.preventDefault();
+	        var id = $(this).attr('data-id');
+	        $("#form-concluirProyecto input[name=proyecto]").val(id);
+	        $("#modal-concluir").modal();
+	    });
+	    $('#concluirProyecto').click(function(event) {
+			event.preventDefault();
+			$("#form-concluirProyecto").submit();
 	    });
 	});
 </script>

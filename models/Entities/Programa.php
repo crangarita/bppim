@@ -6,12 +6,12 @@
 namespace Entities;
 
 /**
- * Categoria
+ * Programa
  *
- * @Table(name="categoria")
+ * @Table(name="programa")
  * @Entity
  */
-class Categoria
+class Programa
 {
 
 function __construct() {}
@@ -28,16 +28,16 @@ function __construct() {}
     /**
      * @var string
      *
-     * @Column(name="descripcion", type="string", length=100, nullable=false)
+     * @Column(name="nombre", type="string", length=100, nullable=false)
      */
-    private $descripcion;
+    private $nombre;
 
 
     /** 
      * Set id
      *
      * @param integer $id
-     * @return Categoria
+     * @return Programa
      */
     public function setId($id)
     {
@@ -57,25 +57,25 @@ function __construct() {}
     }
 
     /** 
-     * Set descripcion
+     * Set nombre
      *
-     * @param string $descripcion
-     * @return Categoria
+     * @param string $nombre
+     * @return Programa
      */
-    public function setDescripcion($descripcion)
+    public function setNombre($nombre)
     {
-        $this->descripcion = $descripcion;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get nombre
      *
      * @return string 
      */
-    public function getDescripcion()
+    public function getNombre()
     {
-        return $this->descripcion;
+        return $this->nombre;
     }
 }

@@ -7,7 +7,11 @@ class proyectoController extends Controller
         Session::acceso('admin');
         $this->_estado = $this->loadModel('estado');
         $this->_categoria = $this->loadModel('categoria');
+        $this->_entidad = $this->loadModel('entidad');
         $this->_sector = $this->loadModel('sector');
+        $this->_asignacion = $this->loadModel('asignacion');
+
+        $this->_proyecto = $this->loadModel('proyecto');
         
     }
     
@@ -18,6 +22,9 @@ class proyectoController extends Controller
     	$this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Listado';
 
     	$this->_view->datos = $this->_model->resultList();
+
+        $this->_view->entidades = $this->_entidad->resultList();
+        $this->_view->estados = $this->_estado->resultList();
 
     	$this->_view->setJsP(array('dataTables/jquery.dataTables','dataTables/dataTables.bootstrap'));
         $this->_view->setCssP(array('dataTables.bootstrap'));
@@ -143,90 +150,45 @@ class proyectoController extends Controller
         $this->redireccionar($this->_presentRequest->getControlador().'/');
     }
 
-    public function agregarVacuna(){
+    public function asignarProyecto(){
 
-        $this->_vacunacion->getInstance()->setMascota($this->_mascota->get($this->getInt("mascota")));
-        $this->_vacunacion->getInstance()->setVacuna($this->_vacuna->get($this->getInt("vacuna")));
-        $this->_vacunacion->getInstance()->setFechaProg(new \DateTime($this->getFecha($this->getTexto('fechaProg'))));
-        $this->_vacunacion->getInstance()->setObservacion($this->getTexto('observacion'));
+        $this->_asignacion->getInstance()->setProyecto($this->_proyecto->get($this->getInt("proyecto")));
+        $this->_asignacion->getInstance()->setEntidad($this->_entidad->get($this->getInt("entidad")));
+        $this->_asignacion->getInstance()->setFechaAsig(new \DateTime($this->getFecha($this->getTexto('fechaAsignacion'))));
+        $this->_asignacion->getInstance()->setFechaLimite(new \DateTime($this->getFecha($this->getTexto('fechaLimite'))));
+        $this->_asignacion->getInstance()->setObservacion($this->getTexto("observacion"));
+
         try {
-            $this->_vacunacion->save();
-            Session::set('mensaje','La <b>Vacuna</b> se Registro Correctamente.');
+            $this->_asignacion->save();
+            Session::set('mensaje','<b>Asignaci&oacute;n</b> Creada con &Eacute;xito.');
         } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');
+            Session::set('error','Error en el Proceso.'.$e);   
         }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->_mascota->getInstance()->getId()."/");
+
+        $this->redireccionar($this->_presentRequest->getControlador().'/');
 
     }
 
-    public function agregarServicio(){
+    public function concluirProyecto(){
 
-        $this->_servicioMascota->getInstance()->setMascota($this->_mascota->get($this->getInt("mascota")));
-        $this->_servicioMascota->getInstance()->setServicio($this->_servicio->get($this->getInt("servicio")));
-        $this->_servicioMascota->getInstance()->setFechaProg(new \DateTime($this->getFecha($this->getTexto('fechaProg'))));
-        $this->_servicioMascota->getInstance()->setObservacion($this->getTexto('observacion'));
+        $this->_asignacion->findByObject(array('proyecto' => $this->getInt("proyecto")));
+        $this->_proyecto->findByObject(array('id' => $this->getInt("proyecto")));
+
+        $this->_asignacion->getInstance()->setFechaEntrega(new \DateTime($this->getFecha($this->getTexto('fechaConcluir'))));
+        $this->_asignacion->getInstance()->setObservacionSect($this->getTexto("observacion"));
+
+        $this->_proyecto->getInstance()->setEstado($this->_estado->get($this->getInt("estado")));
+
         try {
-            $this->_servicioMascota->save();
-            Session::set('mensaje','El <b>Servicio</b> se Registro Correctamente.');
+            $this->_asignacion->update();
+            $this->_proyecto->update();
+            Session::set('mensaje','<b>El Proyecto</b> se Concluyo.');
         } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');            
+            Session::set('error','Error en el Proceso.'.$e);   
         }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->_mascota->getInstance()->getId()."/");
 
-    }
+        $this->redireccionar($this->_presentRequest->getControlador().'/');
 
-    public function asignarVacuna(){
-
-        $this->_vacunacion->get($this->getInt("vacuna"));
-        $this->_vacunacion->getInstance()->setFechaReal(new \DateTime($this->getFecha('fechaRealVacuna')));
-        try {
-            $this->_vacunacion->update();
-            Session::set('mensaje','La <b>Vacuna</b> se Asigno Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');          
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->getInt("mascota")."/");
-
-    }
-
-    public function asignarServicio(){
-
-        $this->_servicioMascota->get($this->getInt("servicio"));
-        $this->_servicioMascota->getInstance()->setFechaReal(new \DateTime($this->getFecha('fechaRealServicio')));
-        try {
-            $this->_servicioMascota->update();
-            Session::set('mensaje','El <b>Servicio</b> se Asigno Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');   
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$this->getInt("mascota")."/");
-
-    }
-
-    public function desactivarVacuna($mascota=0,$vacuna=0){
-
-        $this->_vacunacion->get($vacuna);
-        try {
-            $this->_vacunacion->delete();
-            Session::set('mensaje','La <b>Vacuna</b> se Elimino Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$mascota."/");
-
-    }
-
-    public function desactivarServicio($mascota=0,$servicio=0){
-
-        $this->_servicioMascota->get($servicio);
-        try {
-            $this->_servicioMascota->delete();
-            Session::set('mensaje','La <b>Vacuna</b> se Elimino Correctamente.');
-        } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.');
-        }
-        $this->redireccionar($this->_presentRequest->getControlador().'/actualizar/'.$mascota."/");
-        
     }
 
 }

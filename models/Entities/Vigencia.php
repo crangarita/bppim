@@ -6,12 +6,12 @@
 namespace Entities;
 
 /**
- * Categoria
+ * Vigencia
  *
- * @Table(name="categoria")
+ * @Table(name="vigencia")
  * @Entity
  */
-class Categoria
+class Vigencia
 {
 
 function __construct() {}
@@ -28,16 +28,23 @@ function __construct() {}
     /**
      * @var string
      *
-     * @Column(name="descripcion", type="string", length=100, nullable=false)
+     * @Column(name="descripcion", type="string", length=30, nullable=false)
      */
     private $descripcion;
+
+    /**
+     * @var string
+     *
+     * @Column(name="ano", type="string", length=4, nullable=false)
+     */
+    private $ano;
 
 
     /** 
      * Set id
      *
      * @param integer $id
-     * @return Categoria
+     * @return Vigencia
      */
     public function setId($id)
     {
@@ -60,7 +67,7 @@ function __construct() {}
      * Set descripcion
      *
      * @param string $descripcion
-     * @return Categoria
+     * @return Vigencia
      */
     public function setDescripcion($descripcion)
     {
@@ -77,5 +84,28 @@ function __construct() {}
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /** 
+     * Set ano
+     *
+     * @param string $ano
+     * @return Vigencia
+     */
+    public function setAno($ano)
+    {
+        $this->ano = $ano;
+
+        return $this;
+    }
+
+    /**
+     * Get ano
+     *
+     * @return string 
+     */
+    public function getAno()
+    {
+        return $this->ano;
     }
 }
