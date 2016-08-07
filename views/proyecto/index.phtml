@@ -28,6 +28,7 @@
 									<?php }else{ ?>
 										<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
 									<?php } ?>
+										<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a></td>
 								</td>
 							</tr>
 						<?php } ?>

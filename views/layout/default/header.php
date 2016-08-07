@@ -107,6 +107,7 @@
           <?php endfor; ?>
         <?php endif; ?>
         <script src="<?php echo BASE_URL; ?>public/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="<?php echo BASE_URL; ?>public/js/jquery.alerts.js"></script>
       </head>
       <body>
         <div class="modal fade" id="myModal-default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
