@@ -8,6 +8,7 @@ class proyectoController extends Controller
         $this->_estado = $this->loadModel('estado');
         $this->_categoria = $this->loadModel('categoria');
         $this->_entidad = $this->loadModel('entidad');
+        $this->_vigencia = $this->loadModel('vigencia');
         $this->_sector = $this->loadModel('sector');
         $this->_asignacion = $this->loadModel('asignacion');
 
@@ -158,12 +159,22 @@ class proyectoController extends Controller
         $this->_asignacion->getInstance()->setFechaLimite(new \DateTime($this->getFecha($this->getTexto('fechaLimite'))));
         $this->_asignacion->getInstance()->setObservacion($this->getTexto("observacion"));
 
+        $this->_proyecto->findByObject(array('id' => $this->getInt("proyecto")));
+        $this->_proyecto->getInstance()->setEstado($this->_estado->get(6));
+
         try {
             $this->_asignacion->save();
-            Session::set('mensaje','<b>Asignaci&oacute;n</b> Creada con &Eacute;xito.');
+            $this->_proyecto->update();
+            Session::set('mensaje','<b>Asignaci&oacute;n</b> del proyecto realizada con &Eacute;xito.');
         } catch (Exception $e) {
-            Session::set('error','Error en el Proceso.'.$e);   
+            Session::set('error','Error en el proceso de asignaci&oacute;n.'.$e);   
         }
+
+
+        
+       
+
+
 
         $this->redireccionar($this->_presentRequest->getControlador().'/');
 
@@ -182,12 +193,47 @@ class proyectoController extends Controller
         try {
             $this->_asignacion->update();
             $this->_proyecto->update();
-            Session::set('mensaje','<b>El Proyecto</b> se Concluyo.');
+            Session::set('mensaje','Se ha definido el estado de viabilizaci&oacute;n del proyecto.');
         } catch (Exception $e) {
             Session::set('error','Error en el Proceso.'.$e);   
         }
 
         $this->redireccionar($this->_presentRequest->getControlador().'/');
+
+    }
+
+    public function generarCodigo(){
+        $this->_asignacion->findByObject(array('proyecto' => $this->getInt("proyecto")));
+
+        //$this->_proyecto->findByObject(array('id' => $this->getInt("proyecto")));
+        $this->_proyecto->findByObject(array('id' => 1));
+        $this->_vigencia->findByObject(array('id' => $this->_proyecto->getInstance()->getVigencia()));
+
+
+
+
+         $sql = "select max(codigobppim) as MAXCOD from proyecto 
+         where vigencia = ".$this->_proyecto->getInstance()->getVigencia()."";
+
+        $rta = $this->_proyecto->nativeQuery($sql);
+        echo($sql);
+        if (count($rta)){
+            $rta = $rta[0];
+            $maximo = $rta['MAXCOD'];
+            $texto = explode("-",$maximo);
+            $valor = ((int)$texto[2])+1;
+            $codigo = $texto[0]."-".$texto[1]."-".str_pad($valor, 4, '0', STR_PAD_LEFT);
+
+        }
+
+
+
+
+        echo($codigo);
+
+        exit;
+
+
 
     }
 
