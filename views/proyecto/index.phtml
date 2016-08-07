@@ -9,6 +9,7 @@
 							<th>Nombre</th>
 							<th>Proponente</th>
 							<th>Sector</th>
+							<th>Estado</th>
 							<th class="text-center no-sort" >Acción</th>
 						</tr>
 					</thead>
@@ -18,11 +19,15 @@
 								<td><?php echo $dato->getNombre(); ?></td>
 								<td><?php echo $dato->getProponente(); ?></td>
 								<td><?php echo $dato->getSector()->getDescripcion(); ?></td>
+								<td><?php echo $dato->getEstado()->getDescripcion(); ?></td>
 								<td class="text-center">
 									<a data-id="<?php echo $dato->getId(); ?>" title="Detalles" class="this-vermas" href="#"><i class="fa fa-search-plus"></i></a>
 									<a title="Actualizar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>actualizar/<?php echo $dato->getId(); ?>/"><i class="fa fa-pencil-square-o"></i></a>
-									<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
-									<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
+									<?php if(!count($dato->getAsignaciones())){ ?>
+										<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
+									<?php }else{ ?>
+										<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
+									<?php } ?>
 								</td>
 							</tr>
 						<?php } ?>

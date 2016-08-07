@@ -11,6 +11,7 @@ class proyectoController extends Controller
         $this->_vigencia = $this->loadModel('vigencia');
         $this->_sector = $this->loadModel('sector');
         $this->_asignacion = $this->loadModel('asignacion');
+        $this->_vigencia = $this->loadModel('vigencia');
 
         $this->_proyecto = $this->loadModel('proyecto');
         
@@ -77,10 +78,9 @@ class proyectoController extends Controller
     public function agregar()
     {
     	$this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Agregar';
-        $this->_view->estados = $this->_estado->resultList();
         $this->_view->categorias = $this->_categoria->resultList();
         $this->_view->sectores = $this->_sector->resultList();
-        //$this->_view->clientes = $this->_cliente->findBy(array('veterinario' => Session::get('usuario')));
+        $this->_view->metodo = "guardarProyecto";
 
     	if($_POST){
         	$this->_model = $this->loadModel($this->_presentRequest->getControlador());
@@ -99,6 +99,8 @@ class proyectoController extends Controller
         $this->_view->estados = $this->_estado->resultList();
         $this->_view->categorias = $this->_categoria->resultList();
         $this->_view->sectores = $this->_sector->resultList();
+        $this->_view->vigencias = $this->_vigencia->resultList();
+        $this->_view->metodo = "actualizarProyecto";
 
         if($this->filtrarInt($id)<1){
             Session::set('error','Registro No Encontrado.');
@@ -123,29 +125,50 @@ class proyectoController extends Controller
 
     private function obj($new = true)
     {
-        //$arrayTexto = array('nombre', 'fechaNac', 'descripcion');
-        //$arrayInt = array('raza', 'cliente');
-        //$rta = $this->validarArrays($arrayTexto,$arrayInt);
-        /*if($rta){
+        $arrayTexto = array('nombre', 'fechaRadicacion', 'proponente','numRadicado');
+        $rta = $this->validarArrays($arrayTexto);
+        if($rta){
             Session::set('error','Falto digitar o seleccionar <b>'.$rta.'</b>');
             $this->redireccionar($this->_presentRequest->getUrl());
             exit;  
-        }*/
-
-        $this->_model->getInstance()->setCodigoBPPIM($this->getTexto('codigo'));
-        $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
-        $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
-        $this->_model->getInstance()->setEstado($this->_estado->get($this->getInt('estado')));
-        $this->_model->getInstance()->setCategoria($this->_categoria->get($this->getInt('categoria')));
-        $this->_model->getInstance()->setSector($this->_sector->get($this->getInt('sector')));
-        $this->_model->getInstance()->setFechaCreacion(new \DateTime());
+        }
         
         if($new){
+
+            $this->_model->getInstance()->setNumRadicado($this->getTexto('numRadicado'));
+            $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
+            $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
+            $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
+            $this->_model->getInstance()->setEstado($this->_estado->get(1));
+            $this->_model->getInstance()->setCategoria($this->_categoria->get($this->getInt('categoria')));
+            $this->_model->getInstance()->setSector($this->_sector->get($this->getInt('sector')));
+            $this->_model->getInstance()->setFechaCreacion(new \DateTime());
+            $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));
+        
             $this->_model->save(); 
             Session::set('mensaje','Registro Creado con Exito.');
+
         }else{
+
+            $this->_model->getInstance()->setNumRadicado($this->getTexto('numRadicado'));
+            $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
+            $this->_model->getInstance()->setCodigobppim($this->getTexto('codigoBPPIM'));
+            $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
+            $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
+            $this->_model->getInstance()->setValor($this->getTexto('valor'));
+            $this->_model->getInstance()->setNumBeneficiario($this->getInt('numBeneficiario'));
+            $this->_model->getInstance()->setJustificacion($this->getTexto('justificacion'));
+            $this->_model->getInstance()->setDimension($this->getTexto('dimension'));
+            $this->_model->getInstance()->setMeses($this->getInt('meses'));
+            $this->_model->getInstance()->setVigencia($this->_vigencia->get($this->getInt('vigencia')));
+            $this->_model->getInstance()->setEstado($this->_estado->get($this->getInt('estado')));
+            $this->_model->getInstance()->setCategoria($this->_categoria->get($this->getInt('categoria')));
+            $this->_model->getInstance()->setSector($this->_sector->get($this->getInt('sector')));
+            $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));
+
             $this->_model->update(); 
             Session::set('mensaje','Registro Actualizado con Exito.');
+
         }
 
         $this->redireccionar($this->_presentRequest->getControlador().'/');

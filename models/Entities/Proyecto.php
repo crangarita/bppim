@@ -28,6 +28,13 @@ function __construct() {}
     /**
      * @var string
      *
+     * @Column(name="numradicado", type="string", length=5)
+     */
+    private $numRadicado;
+
+    /**
+     * @var string
+     *
      * @Column(name="codigobppim", type="string", length=15, nullable=true)
      */
     private $codigobppim;
@@ -82,9 +89,12 @@ function __construct() {}
     private $dimension;
 
     /**
-     * @var integer
+     * @var \Vigencia
      *
-     * @Column(name="vigencia", type="integer", nullable=true)
+     * @ManyToOne(targetEntity="Vigencia")
+     * @JoinColumns({
+     *   @JoinColumn(name="vigencia", referencedColumnName="id")
+     * })
      */
     private $vigencia;
 
@@ -139,6 +149,10 @@ function __construct() {}
      */
     private $sector;
 
+    /**
+     * @OneToMany(targetEntity="Asignacion", mappedBy="proyecto")
+     */
+    private $asignaciones;
 
     /** 
      * Set id
@@ -161,6 +175,29 @@ function __construct() {}
     public function getId()
     {
         return $this->id;
+    }
+
+    /** 
+     * Set numRadicado
+     *
+     * @param string $numRadicado
+     * @return Proyecto
+     */
+    public function setNumRadicado($numRadicado)
+    {
+        $this->numRadicado = $numRadicado;
+
+        return $this;
+    }
+
+    /**
+     * Get numRadicado
+     *
+     * @return string 
+     */
+    public function getNumRadicado()
+    {
+        return $this->numRadicado;
     }
 
     /** 
@@ -507,4 +544,15 @@ function __construct() {}
     {
         return $this->sector;
     }
+
+    /**
+     * Get asignaciones
+     *
+     * @return \Asignaciones 
+     */
+    public function getAsignaciones()
+    {
+        return $this->asignaciones;
+    }
+    
 }
