@@ -6,24 +6,137 @@
 
 	    <form role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
 
+	    <?php if($this->metodo == 'guardarProyecto'){ ?>
+
 	    	<div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Codigo: </label>
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >N&uacute;mero Radicado: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="codigo" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getCodigoBppim();} ?>" />
+					<input name="numRadicado" class="form-control required" value="" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Radicaci&oacute;n: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="fechaRadicacion" value="" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Nombre: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="nombre" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getNombre();} ?>" />
+					<input name="nombre" class="form-control required" value="" />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Proponente: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="proponente" class="form-control required" value="<?php if(isset($this->dato)){ echo $this->dato->getProponente();} ?>" />
+					<input name="proponente" class="form-control required" value="" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Categoria: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php echo $this->combobox("categoria", "Seleccione...", $this->categorias, "", "getId", "getDescripcion", "class='form-control show-tick' data-live-search='true' ","getDescripcion"); ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Sector: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php echo $this->combobox("sector", "Seleccione...", $this->sectores, "", "getId", "getDescripcion", "class='form-control show-tick' data-live-search='true' ","getDescripcion"); ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observaci&oacute;n: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<textarea class="form-control" name="observacion"></textarea>
+				</div>
+			</div>
+
+		<?php }else if($this->metodo == "actualizarProyecto"){ ?>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >N&uacute;mero Radicado: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="numRadicado" class="form-control required" value="<?php echo $this->dato->getNumRadicado(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Radicaci&oacute;n: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="fechaRadicacion" value="<?php echo $this->dato->getFechaRadicacion()->format("d/m/Y"); ?>" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >C&oacute;digo BPPIM: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="codigoBPPIM" class="form-control" value="<?php echo $this->dato->getCodigoBPPIM(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Nombre: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="nombre" class="form-control required" value="<?php echo $this->dato->getNombre(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Proponente: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="proponente" class="form-control required" value="<?php echo $this->dato->getProponente(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Valor: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="valor" class="form-control" value="<?php echo $this->dato->getValor(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Numero Beneficiarios: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="numBeneficiario" class="form-control" value="<?php echo $this->dato->getNumBeneficiario(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Justificacion: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="justificacion" class="form-control" value="<?php echo $this->dato->getJustificacion(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Dimension: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="dimension" class="form-control" value="<?php echo $this->dato->getDimension(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Vigencia: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php $vigencia = ''; ?>
+					<?php if($this->dato->getVigencia() != null){ ?>
+						<?php $vigencia =  $this->dato->getVigencia()->getId(); ?>
+					<?php } ?>
+					<?php echo $this->combobox("vigencia", "Seleccione...", $this->vigencias, $vigencia, "getId", "getDescripcion", "class='form-control show-tick' data-live-search='true' ","getDescripcion"); ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Meses: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<input name="meses" class="form-control" value="<?php echo $this->dato->getMeses(); ?>" />
 				</div>
 			</div>
 
@@ -31,8 +144,8 @@
 				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Categoria: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
 				<?php $categoria = ''; ?>
-				<?php if(isset($this->dato)){ $categoria = $this->dato->getCategoria()->getId(); } ?>
-					<?php echo $this->combobox("categoria", "Seleccione...", $this->categorias, $categoria, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+				<?php $categoria = $this->dato->getCategoria()->getId(); ?>
+					<?php echo $this->combobox("categoria", "Seleccione...", $this->categorias, $categoria, "getId", "getDescripcion", "class='form-control show-tick' data-live-search='true' ","getDescripcion"); ?>
 				</div>
 			</div>
 
@@ -40,8 +153,15 @@
 				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Sector: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
 				<?php $sector = ''; ?>
-				<?php if(isset($this->dato)){ $sector = $this->dato->getSector()->getId(); } ?>
-					<?php echo $this->combobox("sector", "Seleccione...", $this->sectores, $sector, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+				<?php $sector = $this->dato->getSector()->getId(); ?>
+					<?php echo $this->combobox("sector", "Seleccione...", $this->sectores, $sector, "getId", "getDescripcion", "class='form-control show-tick' data-live-search='true' ","getDescripcion"); ?>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Observaci&oacute;n: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<textarea class="form-control" name="observacion"><?php echo $this->dato->getObservacion(); ?></textarea>
 				</div>
 			</div>
 
@@ -53,6 +173,8 @@
 					<?php echo $this->combobox("estado", "Seleccione...", $this->estados, $estado, "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
 				</div>
 			</div>
+
+		<?php } ?>
 
 			<p class="text-right comentario">
 				Los campos marcados con <span class="span">*</span> son obligatorios.
