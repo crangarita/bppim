@@ -13,6 +13,9 @@ class proyectoController extends Controller
         $this->_asignacion = $this->loadModel('asignacion');
         $this->_vigencia = $this->loadModel('vigencia');
 
+        $this->_requerimiento = $this->loadModel('requerimiento');
+        $this->_proyectoReq = $this->loadModel('proyectoReq');
+
         $this->_proyecto = $this->loadModel('proyecto');
         
     }
@@ -193,12 +196,6 @@ class proyectoController extends Controller
             Session::set('error','Error en el proceso de asignaci&oacute;n.'.$e);   
         }
 
-
-        
-       
-
-
-
         $this->redireccionar($this->_presentRequest->getControlador().'/');
 
     }
@@ -232,11 +229,8 @@ class proyectoController extends Controller
         $this->_proyecto->findByObject(array('id' => 1));
         $this->_vigencia->findByObject(array('id' => $this->_proyecto->getInstance()->getVigencia()));
 
-
-
-
-         $sql = "select max(codigobppim) as MAXCOD from proyecto 
-         where vigencia = ".$this->_proyecto->getInstance()->getVigencia()."";
+        $sql = "select max(codigobppim) as MAXCOD from proyecto 
+        where vigencia = ".$this->_proyecto->getInstance()->getVigencia()."";
 
         $rta = $this->_proyecto->nativeQuery($sql);
         echo($sql);
@@ -249,14 +243,45 @@ class proyectoController extends Controller
 
         }
 
-
-
-
         echo($codigo);
 
         exit;
 
+    }
 
+    public function requerimientos($proyecto = 0){
+
+        $temp = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
+
+        if(!$temp){
+
+            $requerimientos = $this->_requerimiento->findBy(array('estado' => 1));
+            foreach ($requerimientos as $key => $value) {
+                $this->_proyectoReq = $this->loadModel("proyectoReq");
+                $this->_proyectoReq->getInstance()->setProyecto($this->_proyecto->get($proyecto));
+                $this->_proyectoReq->getInstance()->setRequerimiento($this->_requerimiento->get($value->getId()));
+                $this->_proyectoReq->save();
+            }
+
+        }
+
+        /*if($this->getInt('guardar') == 1){
+            
+            $requerimientos = $this->_requerimiento->findBy(array('estado' => 1));
+            foreach ($requerimientos as $key => $value) {
+
+               $this->_proyectoReq = $this->loadModel("proyectoReq");
+               $this->_proyectoReq->findByObject(array('proyecto' => $proyecto, 'requerimiento' => $this->getInt("r".$value->getId())));
+               $this->_proyectoReq->getInstance()->setEstado($this->getInt("op".$value->getId()));
+               $this->_proyectoReq->update();
+
+            }
+
+        }*/
+
+        $this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
+
+        $this->_view->renderizar('requerimiento', ucwords(strtolower($this->_presentRequest->getControlador())));      
 
     }
 
