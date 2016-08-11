@@ -23,6 +23,7 @@
 								<td class="text-center">
 									<a data-id="<?php echo $dato->getId(); ?>" title="Detalles" class="this-vermas" href="#"><i class="fa fa-search-plus"></i></a>
 									<a title="Actualizar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>actualizar/<?php echo $dato->getId(); ?>/"><i class="fa fa-pencil-square-o"></i></a>
+									<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
 									<?php if(!count($dato->getAsignaciones())){ ?>
 										<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
 									<?php }else{ ?>
