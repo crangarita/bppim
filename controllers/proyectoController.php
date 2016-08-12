@@ -260,12 +260,14 @@ class proyectoController extends Controller
                 $this->_proyectoReq = $this->loadModel("proyectoReq");
                 $this->_proyectoReq->getInstance()->setProyecto($this->_proyecto->get($proyecto));
                 $this->_proyectoReq->getInstance()->setRequerimiento($this->_requerimiento->get($value->getId()));
+                $this->_proyectoReq->getInstance()->setFecha(new \DateTime());
+                $this->_proyectoReq->getInstance()->setEstado(0);
                 $this->_proyectoReq->save();
             }
 
         }
 
-        /*if($this->getInt('guardar') == 1){
+        if($this->getInt('guardar') == 1){
             
             $requerimientos = $this->_requerimiento->findBy(array('estado' => 1));
             foreach ($requerimientos as $key => $value) {
@@ -277,7 +279,10 @@ class proyectoController extends Controller
 
             }
 
-        }*/
+            Session::set('mensaje','Los Requerimientos se Guardaron con Exito.');
+            $this->redireccionar($this->_presentRequest->getControlador().'/');
+
+        }
 
         $this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
 
