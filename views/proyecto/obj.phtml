@@ -209,8 +209,11 @@
 						<tr>
 							<td><?php echo $dato->getEntidad()->getNombre(); ?></td>
 							<td><?php echo $dato->getFechaAsig()->format("d/m/Y"); ?></td>
-							<td><?php echo $dato->getFechaEntrega()->format("d/m/Y"); ?></td>
+							<td></td>
 							<td class="text-center">
+
+								<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/cartasignacion/' . $dato->getProyecto()->getId().'/'.$dato->getEntidad()->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
+
 							</td>
 						</tr>
 					<?php } ?>

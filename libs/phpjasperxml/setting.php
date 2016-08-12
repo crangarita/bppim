@@ -1,6 +1,6 @@
 <?php
 $server="localhost";
-$db="revision";
+$db="bppim";
 $user="root";
 $pass="";
 $version="0.9b";

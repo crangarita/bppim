@@ -13,7 +13,7 @@ class Jasperpdf
 		//$this->instancia = Db2::getInstance('WSIAACA');
 	}
 	
-	function generarCartasignacion($proyecto=""){
+	function generarCartasignacion($proyecto=1,$entidad=1){
 		
 		include_once('class/tcpdf/tcpdf.php');
 		include_once('class/PHPJasperXML.inc.php');
@@ -23,11 +23,12 @@ class Jasperpdf
 
 		$PHPJasperXML = new PHPJasperXML();
 		//$PHPJasperXML->debugsql=true;
-		$PHPJasperXML->arrayParameter=array("proyecto"=>$proyecto);
+		$PHPJasperXML->arrayParameter=array("proyecto"=>$proyecto,"entidad"=>$entidad);
 		$PHPJasperXML->xml_dismantle($xml);
 
 		$PHPJasperXML->transferDBtoArray($server,$user,$pass,$db);
-		$PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+		$PHPJasperXML->outpage("D");    //page output method I:standard output  D:Download file
+
 	}
 
 

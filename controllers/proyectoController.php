@@ -285,6 +285,17 @@ class proyectoController extends Controller
 
     }
 
+
+
+    public function cartasignacion($proyecto=1,$entidad=1){
+        
+        $this->getLibrary('phpjasperxml/jasperpdf');
+        
+        $pdf = new Jasperpdf();
+        
+        $pdf->generarCartasignacion($proyecto,$entidad);
+    }
+
 }
 
 ?>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cartasignacion" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1dd313e5-d2b2-4fc2-b566-f257ce506b68">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cartasignacion" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1dd313e5-d2b2-4fc2-b566-f257ce506b68">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="16"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="proyecto" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -16,10 +16,8 @@
   `funcionario`.`nombre` nomfuncionario,
   `funcionario`.`cargo`,
   `entidad`.`nombre` nomentidad,
- CONCAT(DATE_FORMAT(`asignacion`.`fechaasig`,'%e'), ' de ',
- CASE MONTH(`asignacion`.`fechaasig`) WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN 8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' WHEN 12 THEN 'Diciembre' END,' de ',DATE_FORMAT(`asignacion`.`fechaasig`,'%Y'))  AS fechaasig,
-CONCAT(DATE_FORMAT(`asignacion`.`fechalimite`,'%e'), ' de ',
- CASE MONTH(`asignacion`.`fechalimite`) WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN 8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' WHEN 12 THEN 'Diciembre' END,' de ',DATE_FORMAT(`asignacion`.`fechalimite`,'%Y'))  AS fechalimite,
+  `asignacion`.`fechaasig`,
+  `asignacion`.`fechalimite`,
   f2.nombre as asgfuncionario,
   f2.cargo as asgcargo,
   municipio.nombre as nommunicipio
@@ -40,10 +38,10 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="nomentidad" class="java.lang.String"/>
-	<field name="fechaasig" class="java.lang.String">
+	<field name="fechaasig" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fechalimite" class="java.lang.String">
+	<field name="fechalimite" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="asgfuncionario" class="java.lang.String"/>
@@ -54,16 +52,16 @@ WHERE
 	</background>
 	<pageHeader>
 		<band height="94" splitType="Stretch">
-			<image>
-				<reportElement x="2" y="2" width="215" height="86" uuid="24ec872e-582f-4e44-bce8-d8b6e4b56393"/>
-				<imageExpression><![CDATA["C:\\wamp\\www\\bppim\\reportes\\logo.jpg"]]></imageExpression>
-			</image>
 			<rectangle>
 				<reportElement mode="Transparent" x="0" y="0" width="572" height="89" uuid="28bc66cf-9229-4ae4-b9a9-e07225adca95"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
+			<image>
+				<reportElement x="2" y="3" width="215" height="86" uuid="24ec872e-582f-4e44-bce8-d8b6e4b56393"/>
+				<imageExpression><![CDATA["C:\\wamp\\www\\bppim\\reportes\\logo.jpg"]]></imageExpression>
+			</image>
 			<line>
 				<reportElement x="218" y="0" width="1" height="89" uuid="b9e53983-4311-4b67-b25b-5851d6a202d3"/>
 				<graphicElement>
@@ -123,6 +121,15 @@ WHERE
 				</textElement>
 				<text><![CDATA[Pagina: ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="493" y="65" width="20" height="20" uuid="cce451c5-728d-4c14-b39c-99856a713c2a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="530" y="65" width="20" height="20" uuid="414c5c78-76b8-4e27-a300-a0fbdc27325b"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="513" y="65" width="17" height="20" uuid="e365e2fb-1fa6-4590-b600-c0239dfe5a46"/>
 				<textElement textAlignment="Center">
@@ -166,7 +173,7 @@ WHERE
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nomfuncionario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomfuncionario}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="32" y="79" width="491" height="20" uuid="33b16dc1-fc15-4bb5-ae0c-2d5de36e4a33"/>
@@ -187,14 +194,14 @@ WHERE
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nommunicipio} +", "+$F{fechaasig}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nommunicipio}.toUpperCase() +", "+DateFormat.getDateInstance(DateFormat.LONG, $P{REPORT_LOCALE}).format( $F{fechaasig} )]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField>
 				<reportElement x="32" y="180" width="508" height="303" uuid="f05654a9-a5ec-4748-a223-d0d2538573b7"/>
 				<textElement textAlignment="Justified">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Comedidamente me permito hacer llegar el Proyecto denominado: "+$F{nomproyecto}+" con los siguientes Anexos: presupuesto.  \n\nCon el fin de que sea revisado por usted y conceptúe si el mismo es o no viable para ser registrado en el Banco de Proyectos de Inversión del Municipio. \n\nVale la pena anotar que al momento de la revisión del respectivo proyecto, usted deberá foliar y firmar cada una de las hojas, con el fin de tener un mecanismo de seguridad, toda vez que los proyectos en esta oficina son prestados a los diferentes interesados, y puede en cualquier momento ser sujeto de alteración.\n\nPor último le agradezco que el respectivo estudio de viabilidad sea entregado a más tardar el día "+ $F{fechalimite} +".\n\n\n\nAtentamente,"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Comedidamente me permito hacer llegar el Proyecto denominado: "+$F{nomproyecto}.toUpperCase()+" con los siguientes Anexos: presupuesto.  \n\nCon el fin de que sea revisado por usted y conceptúe si el mismo es o no viable para ser registrado en el Banco de Proyectos de Inversión del Municipio. \n\nVale la pena anotar que al momento de la revisión del respectivo proyecto, usted deberá foliar y firmar cada una de las hojas, con el fin de tener un mecanismo de seguridad, toda vez que los proyectos en esta oficina son prestados a los diferentes interesados, y puede en cualquier momento ser sujeto de alteración.\n\nPor último le agradezco que el respectivo estudio de viabilidad sea entregado a más tardar el día "+DateFormat.getDateInstance(DateFormat.LONG, $P{REPORT_LOCALE}).format( $F{fechalimite} )+".\n\n\n\nAtentamente,"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="32" y="136" width="247" height="20" uuid="f6be3857-640a-4473-8518-4458ce161855"/>
@@ -208,14 +215,7 @@ WHERE
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{asgfuncionario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="32" y="511" width="268" height="41" uuid="daabd04f-ef1e-4c37-9bc3-38e4a12b60db"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{asgcargo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{asgfuncionario}.toUpperCase()+"\n"+$F{asgcargo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -223,7 +223,7 @@ WHERE
 		<band height="77" splitType="Stretch">
 			<image>
 				<reportElement x="81" y="1" width="404" height="32" uuid="f7cab43c-a6bd-4684-a126-7b6761244a3a"/>
-				<imageExpression><![CDATA["C:\\wamp\\www\\bppim\\reportes\\pie.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\wamp\\www\\bppim\\reportes\\pie.bmp"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="31" width="572" height="20" forecolor="#0033CC" uuid="5d410b32-ee49-43c0-8892-d7ff9e12f59d"/>
@@ -241,4 +241,7 @@ Código Postal 544570 - Telefax 5668039
 			</staticText>
 		</band>
 	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
 </jasperReport>

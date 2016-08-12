@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="983d7e6f-dec8-45b2-b5f7-16deeb13c412">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="77"/>
+	<parameter name="proyecto" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entidad" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  `proyecto`.`nombre` nomproyecto,
+  `funcionario`.`cedula`,
+  `funcionario`.`nombre` nomfuncionario,
+  `funcionario`.`cargo`,
+  `entidad`.`nombre` nomentidad,
+  `asignacion`.`fechaasig`,
+  `asignacion`.`fechalimite`,
+  f2.nombre as asgfuncionario,
+  f2.cargo as asgcargo,
+  municipio.nombre as nommunicipio
+FROM configuracion inner join funcionario as f2 on configuracion.asigna = f2.id inner join municipio on municipio.codigo = configuracion.municipio,
+  `asignacion`
+  INNER JOIN `proyecto` ON (`asignacion`.`proyecto` = `proyecto`.`id`)
+  INNER JOIN `entidad` ON (`asignacion`.`entidad` = `entidad`.`id`)
+  INNER JOIN `funcionario` ON (`entidad`.`id` = `funcionario`.`entidad`)
+WHERE
+  `asignacion`.`proyecto` = $P{proyecto} and asignacion.entidad = $P{entidad}]]>
+	</queryString>
+	<field name="nomproyecto" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomfuncionario" class="java.lang.String"/>
+	<field name="cargo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomentidad" class="java.lang.String"/>
+	<field name="fechaasig" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechalimite" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="asgfuncionario" class="java.lang.String"/>
+	<field name="asgcargo" class="java.lang.String"/>
+	<field name="nommunicipio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="104" y="2" width="100" height="20" uuid="1089b886-2931-4a4e-90c1-a02bd1ce1bbd"/>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="2" width="100" height="20" uuid="2e43d434-b7c4-4e2a-94b0-472f9f2dfc57"/>
+				<text><![CDATA[nomproyecto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="26" y="16" width="100" height="20" uuid="3d5582ac-d5ce-44ac-8e7c-431042234a4a"/>
+				<textFieldExpression><![CDATA[$F{nomproyecto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50"/>
+	</noData>
+</jasperReport>
