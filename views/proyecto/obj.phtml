@@ -188,7 +188,7 @@
 	  </div>
 </div>
 
-
+<?php if($this->metodo == "actualizarProyecto") { ?>
 <div class="panel panel-primary">
 	  <div class="panel-heading">
 			<h3 class="panel-title">Asignacion Viabilizador</h3>
@@ -212,7 +212,7 @@
 							<td></td>
 							<td class="text-center">
 
-								<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/cartasignacion/' . $dato->getProyecto()->getId().'/'.$dato->getEntidad()->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
+								<a href="<?php echo BASE_URL . 'proyecto/cartasignacion/' . $dato->getProyecto()->getId().'/'.$dato->getEntidad()->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
 
 							</td>
 						</tr>
@@ -224,3 +224,4 @@
 	  	<?php } ?>
 	  </div>
 </div>
+<?php } ?>

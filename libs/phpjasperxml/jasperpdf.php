@@ -19,7 +19,7 @@ class Jasperpdf
 		include_once('class/PHPJasperXML.inc.php');
 		include_once('setting.php');
 		
-		$xml =  simplexml_load_file("reportes/cartasignacion.jrxml");
+		$xml =  simplexml_load_file("reportes/cartaasignacionnew.jrxml");
 
 		$PHPJasperXML = new PHPJasperXML();
 		//$PHPJasperXML->debugsql=true;
