@@ -8,6 +8,7 @@ class proyectoController extends Controller
         $this->_estado = $this->loadModel('estado');
         $this->_categoria = $this->loadModel('categoria');
         $this->_entidad = $this->loadModel('entidad');
+        $this->_funcionario = $this->loadModel('funcionario');
         $this->_vigencia = $this->loadModel('vigencia');
         $this->_sector = $this->loadModel('sector');
         $this->_asignacion = $this->loadModel('asignacion');
@@ -29,6 +30,7 @@ class proyectoController extends Controller
     	$this->_view->datos = $this->_model->resultList();
 
         $this->_view->entidades = $this->_entidad->resultList();
+        $this->_view->funcionarios = $this->_funcionario->resultList();
         $this->_view->estados = $this->_estado->resultList();
 
     	$this->_view->setJsP(array('dataTables/jquery.dataTables','dataTables/dataTables.bootstrap'));
@@ -299,6 +301,16 @@ class proyectoController extends Controller
         $pdf = new Jasperpdf();
         
         $pdf->generarCartasignacion($proyecto,$entidad);
+    }
+
+
+    public function conceptosectorial($proyecto=1){
+        
+        $this->getLibrary('phpjasperxml/jasperpdf');
+        
+        $pdf = new Jasperpdf();
+        
+        $pdf->generarConceptosectorial($proyecto);
     }
 
 }

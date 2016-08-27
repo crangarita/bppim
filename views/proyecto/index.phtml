@@ -21,7 +21,6 @@
 								<td><?php echo $dato->getSector()->getDescripcion(); ?></td>
 								<td><?php echo $dato->getEstado()->getDescripcion(); ?></td>
 								<td class="text-center">
-									<a data-id="<?php echo $dato->getId(); ?>" title="Detalles" class="this-vermas" href="#"><i class="fa fa-search-plus"></i></a>
 									<a title="Actualizar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>actualizar/<?php echo $dato->getId(); ?>/"><i class="fa fa-pencil-square-o"></i></a>
 									<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
 									<?php if(!count($dato->getAsignaciones())){ ?>
@@ -58,6 +57,15 @@
 							<?php echo $this->combobox("entidad", "Seleccione...", $this->entidades, "", "getId", "getNombre", "class='form-control required show-tick' data-live-search='true' ","getNombre"); ?>
 						</div>
 					</div>
+
+
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Funcionario: </label>
+						<div class="col-xs-12 col-sm-9 col-lg-9">
+							<?php echo $this->combobox("funcionario", "Seleccione...", $this->funcionarios, "", "getId", "getNombre", "class='form-control required show-tick' data-live-search='true' ","getNombre"); ?>
+						</div>
+					</div>
+
 
 					<div class="form-group">
 						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Asign: </label>

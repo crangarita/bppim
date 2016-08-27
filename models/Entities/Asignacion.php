@@ -73,6 +73,13 @@ function __construct() {}
      */
     private $observacionsect;
 
+    /**
+     * @var integer
+     *
+     * @Column(name="funcionario", type="integer", nullable=true)
+     */
+    private $funcionario;
+
 
     /** 
      * Set proyecto
@@ -233,5 +240,29 @@ function __construct() {}
     public function getObservacionsect()
     {
         return $this->observacionsect;
+    }
+
+
+    /** 
+     * Set funcionario
+     *
+     * @param integer $funcionario
+     * @return Asignacion
+     */
+    public function setFuncionario($funcionario)
+    {
+        $this->funcionario = $funcionario;
+
+        return $this;
+    }
+
+    /**
+     * Get funcionario
+     *
+     * @return integer 
+     */
+    public function getFuncionario()
+    {
+        return $this->funcionario;
     }
 }

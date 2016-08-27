@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="conceptosectorial" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15cbd11d-4f85-4c05-afc2-3558505bd175">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="proyecto" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  `requerimiento`.`tipo`,
+  `tiporequerimiento`.`descripcion` tiporeq,
+  `requerimiento`.`numero`,
+  `requerimiento`.`id`,
+  `requerimiento`.`descripcion` req,
+  `proyecto`.`codigobppim`,
+  `proyecto`.`nombre`,
+  `sector`.`descripcion` sector,
+  `proyecto`.`valor`,
+  `proyecto`.`numbeneficiario`,
+  `proyecto`.`meses`,
+  `vigencia`.`descripcion` vigencia,
+  `proyectoreq`.`estado`,
+  case when `tiporequerimiento`.`tieneobs` = 0 then 'Responsable'
+  else 'Observación' end tieneobser
+FROM
+  `tiporequerimiento`
+  INNER JOIN `requerimiento` ON (`tiporequerimiento`.`id` = `requerimiento`.`tipo`)
+  INNER JOIN `proyectoreq` ON (`requerimiento`.`id` = `proyectoreq`.`requerimiento`)
+  INNER JOIN `proyecto` ON (`proyectoreq`.`proyecto` = `proyecto`.`id`)
+  INNER JOIN `sector` ON (`proyecto`.`sector` = `sector`.`id`)
+  INNER JOIN `vigencia` ON (`proyecto`.`vigencia` = `vigencia`.`id`)
+WHERE
+  `proyecto`.`id` = $P{proyecto}
+
+]]>
+	</queryString>
+	<field name="tipo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tiporeq" class="java.lang.String"/>
+	<field name="numero" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="req" class="java.lang.String"/>
+	<field name="codigobppim" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sector" class="java.lang.String"/>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numbeneficiario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="meses" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vigencia" class="java.lang.String"/>
+	<field name="estado" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tieneobser" class="java.lang.String"/>
+	<group name="tiporeq">
+		<groupExpression><![CDATA[$F{tipo}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement x="143" y="0" width="143" height="20" uuid="42a70eaa-ef16-489d-905a-a7041566e0c8"/>
+					<textFieldExpression><![CDATA[$F{tiporeq}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="143" height="20" uuid="1a86c079-9ee3-41d5-b1af-a03d1f50b139"/>
+					<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="308" y="1" width="31" height="20" uuid="8f79b6b6-cda7-426e-84a0-3380baa4d4b7"/>
+					<text><![CDATA[Si]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="339" y="1" width="31" height="20" uuid="1cb6d1a2-7ade-4d7b-992a-ebacaa26c69a"/>
+					<text><![CDATA[No]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="370" y="1" width="31" height="20" uuid="dd432f52-c6fc-472d-8265-e928e165e525"/>
+					<text><![CDATA[NA]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="401" y="1" width="171" height="20" uuid="20f27e60-ce16-425e-ade0-fd1f60cea5f8"/>
+					<textFieldExpression><![CDATA[$F{tieneobser}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="0" width="32" height="20" uuid="2a3911f3-4657-42a7-b477-0f331a69d7c6"/>
+				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="54" y="0" width="254" height="20" uuid="65507133-b4a1-43c7-911c-d651408891b3"/>
+				<textFieldExpression><![CDATA[$F{req}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
