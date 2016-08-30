@@ -1,7 +1,7 @@
 function confirmar(url) {
     jConfirm("\u00bfEsta seguro que desea seguir con el procedimiento?", 'Di\u00e1logo de Confirmaci\u00f3n', function(confirmo) {
         if (confirmo) {
-            cargandoGeneral();
+            //cargandoGeneral();
             location.href = url;
         }
     });

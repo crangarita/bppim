@@ -10,7 +10,7 @@
 							<th>Proponente</th>
 							<th>Sector</th>
 							<th>Estado</th>
-							<th class="text-center no-sort" >Acción</th>
+							<th class="text-center no-sort" style="width:140px">Acción</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -22,14 +22,18 @@
 								<td><?php echo $dato->getEstado()->getDescripcion(); ?></td>
 								<td class="text-center">
 									<a title="Actualizar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>actualizar/<?php echo $dato->getId(); ?>/"><i class="fa fa-pencil-square-o"></i></a>
-									<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
 									<?php if(!count($dato->getAsignaciones())){ ?>
 										<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
-									<?php }else{ ?>
+									<?php }elseif(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() == null){ ?>
 										<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
 									<?php } ?>
-										<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
-										</td>
+									<?php if(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() != null){ ?>
+										<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
+										<?php if($dato->getCodigoBppim() == null){ ?>
+											<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
+										<?php } ?>
+									<?php } ?>
+									
 								</td>
 							</tr>
 						<?php } ?>
@@ -62,7 +66,9 @@
 					<div class="form-group">
 						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Funcionario: </label>
 						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<?php echo $this->combobox("funcionario", "Seleccione...", $this->funcionarios, "", "getId", "getNombre", "class='form-control required show-tick' data-live-search='true' ","getNombre"); ?>
+							<select name="funcionario" class="form-control required">
+								<option value="">Seleccione una Entidad...</option>
+							</select>
 						</div>
 					</div>
 
@@ -171,6 +177,17 @@
 	    $('#concluirProyecto').click(function(event) {
 			event.preventDefault();
 			$("#form-concluirProyecto").submit();
+	    });
+	    $("#form-asignarProyecto select[name='entidad']").change(function(event) {
+	    	var entidad = $(this).val();
+	    	$.post(BASE.url+'/proyecto/cargarFuncionario/', {entidad:entidad}, function(data) {
+	    		var cadena = "<option value=''>Seleccione...</option>";
+					$.each(data.datos, function(index, val) {
+						 cadena = "<option value='"+val.id+"'>"+val.nombre+"</option>";
+					});
+				$("#form-asignarProyecto select[name='funcionario']").html(cadena);
+				$("#form-asignarProyecto select[name='funcionario']").selectpicker("refresh");
+	    	},"json");
 	    });
 	});
 </script>

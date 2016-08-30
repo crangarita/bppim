@@ -74,9 +74,12 @@ function __construct() {}
     private $observacionsect;
 
     /**
-     * @var integer
+     * @var \Funcionario
      *
-     * @Column(name="funcionario", type="integer", nullable=true)
+     * @ManyToOne(targetEntity="Funcionario")
+     * @JoinColumns({
+     *   @JoinColumn(name="funcionario", referencedColumnName="id")
+     * })
      */
     private $funcionario;
 

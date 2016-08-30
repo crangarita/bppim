@@ -183,6 +183,7 @@ class proyectoController extends Controller
 
         $this->_asignacion->getInstance()->setProyecto($this->_proyecto->get($this->getInt("proyecto")));
         $this->_asignacion->getInstance()->setEntidad($this->_entidad->get($this->getInt("entidad")));
+        $this->_asignacion->getInstance()->setFuncionario($this->_funcionario->get($this->getInt("funcionario")));
         $this->_asignacion->getInstance()->setFechaAsig(new \DateTime($this->getFecha($this->getTexto('fechaAsignacion'))));
         $this->_asignacion->getInstance()->setFechaLimite(new \DateTime($this->getFecha($this->getTexto('fechaLimite'))));
         $this->_asignacion->getInstance()->setObservacion($this->getTexto("observacion"));
@@ -224,30 +225,32 @@ class proyectoController extends Controller
 
     }
 
-    public function generarCodigo(){
-        $this->_asignacion->findByObject(array('proyecto' => $this->getInt("proyecto")));
+    public function generarCodigo($codigo){
 
-        //$this->_proyecto->findByObject(array('id' => $this->getInt("proyecto")));
-        $this->_proyecto->findByObject(array('id' => 1));
-        $this->_vigencia->findByObject(array('id' => $this->_proyecto->getInstance()->getVigencia()));
+        $this->_proyecto->findByObject(array('id' => $codigo));
 
-        $sql = "select max(codigobppim) as MAXCOD from proyecto 
-        where vigencia = ".$this->_proyecto->getInstance()->getVigencia()."";
+        $sql = "SELECT MAX(CODIGOBPPIM) AS MAXCOD FROM PROYECTO WHERE VIGENCIA = ".$this->_proyecto->getInstance()->getVigencia()->getId()."";
 
         $rta = $this->_proyecto->nativeQuery($sql);
-        echo($sql);
+
         if (count($rta)){
             $rta = $rta[0];
             $maximo = $rta['MAXCOD'];
             $texto = explode("-",$maximo);
             $valor = ((int)$texto[2])+1;
             $codigo = $texto[0]."-".$texto[1]."-".str_pad($valor, 4, '0', STR_PAD_LEFT);
-
         }
 
-        echo($codigo);
+        $this->_proyecto->getInstance()->setCodigoBppim($codigo);
 
-        exit;
+        try {
+            $this->_proyecto->update();
+            Session::set('mensaje','Se Gener&oacute; el C&oacute;digo Correctamente');
+        } catch (Exception $e) {
+            Session::set('error','Error en el Proceso.');   
+        }
+
+        $this->redireccionar($this->_presentRequest->getControlador().'/');
 
     }
 
@@ -292,7 +295,24 @@ class proyectoController extends Controller
 
     }
 
+    public function cargarFuncionario(){
 
+        $entidad = $this->getInt("entidad");
+
+        $funcionarios = $this->_funcionario->findBy(array('entidad' => $entidad));
+
+        $arrayExt['datos'] = array();
+
+        foreach ($funcionarios as $key => $value) {
+            $arrayInt = array();
+            $arrayInt['id'] = $value->getId();
+            $arrayInt['nombre'] = $value->getNombre();
+            $arrayExt['datos'][] = $arrayInt;            
+        }
+
+        echo (json_encode($arrayExt));
+
+    }
 
     public function cartasignacion($proyecto=1,$entidad=1){
         
