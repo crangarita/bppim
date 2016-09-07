@@ -6,12 +6,12 @@
 namespace Entities;
 
 /**
- * Requerimiento
+ * TipoRequerimiento
  *
- * @Table(name="requerimiento")
+ * @Table(name="tiporequerimiento")
  * @Entity
  */
-class Requerimiento
+class TipoRequerimiento
 {
 
 function __construct() {}
@@ -31,20 +31,6 @@ function __construct() {}
      * @Column(name="descripcion", type="string", length=40)
      */
     private $descripcion;
-
-    /**
-     * @var integer
-     *
-     * @Column(name="tipo", type="integer")
-     */
-    private $tipo;
-
-    /**
-     * @var integer
-     *
-     * @Column(name="estado", type="integer")
-     */
-    private $estado;
 
     /** 
      * Set id
@@ -92,51 +78,4 @@ function __construct() {}
         return $this->descripcion;
     }
 
-    /** 
-     * Set tipo
-     *
-     * @param integer $tipo
-     * @return Requerimiento
-     */
-    public function setTipo($tipo)
-    {
-        $this->tipo = $tipo;
-
-        return $this;
-    }
-
-    /**
-     * Get tipo
-     *
-     * @return integer 
-     */
-    public function getTipo()
-    {
-        return $this->tipo;
-    }
-
-    /** 
-     * Set estado
-     *
-     * @param integer $estado
-     * @return Requerimiento
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-
-    /**
-     * Get estado
-     *
-     * @return integer 
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    
 }

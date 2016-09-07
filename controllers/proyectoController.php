@@ -15,6 +15,7 @@ class proyectoController extends Controller
         $this->_vigencia = $this->loadModel('vigencia');
 
         $this->_requerimiento = $this->loadModel('requerimiento');
+        $this->_tipoRequerimiento = $this->loadModel('tipoRequerimiento');
         $this->_proyectoReq = $this->loadModel('proyectoReq');
 
         $this->_proyecto = $this->loadModel('proyecto');
@@ -130,7 +131,7 @@ class proyectoController extends Controller
 
     private function obj($new = true)
     {
-        $arrayTexto = array('nombre', 'fechaRadicacion', 'proponente','numRadicado');
+        $arrayTexto = array('nombre', 'fechaRadicacion', 'proponente');
         $rta = $this->validarArrays($arrayTexto);
         if($rta){
             Session::set('error','Falto digitar o seleccionar <b>'.$rta.'</b>');
@@ -140,7 +141,13 @@ class proyectoController extends Controller
         
         if($new){
 
-            $this->_model->getInstance()->setNumRadicado($this->getTexto('numRadicado'));
+            $sql = "SELECT MAX(NUMRADICADO) AS RADICADO FROM PROYECTO";
+            $temp = $this->_estado->nativeQuery($sql);
+            $radicado = $temp[0]['RADICADO'];
+            $radicadoInt = intval($radicado);
+            $radicadoFinal = "0000".($radicadoInt+1);
+
+            $this->_model->getInstance()->setNumRadicado($radicadoFinal);
             $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
             $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
             $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
@@ -289,8 +296,9 @@ class proyectoController extends Controller
 
         }
 
+        $this->_view->tiposReq = $this->_tipoRequerimiento->resultList();
         $this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
-
+        $this->_view->titulo = "Requerimientos";
         $this->_view->renderizar('requerimiento', ucwords(strtolower($this->_presentRequest->getControlador())));      
 
     }

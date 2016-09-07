@@ -1,31 +1,72 @@
 <div class="panel panel-primary">
-	  <div class="panel-heading">
-			<h3 class="panel-title">Listado</h3>
-	  </div>
-	  <div class="panel-body">
-	  <form role="form" method="post" enctype="multipart/form-data">
-	  	<input type="hidden" name="guardar" value="1">
-			<table class="table table-striped table-bordered table-hover" id="dataTablesAdvanced">
-				<thead>
-					<tr>
-						<th>Requisitos de Viabilizacion</th>
-						<th class="text-center" style="width:60px">SI</th>
-						<th class="text-center" style="width:60px">NO</th>
-						<th class="text-center" style="width:60px">N/A</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($this->datos as $key => $dato) { ?>
-						<tr>
-							<td><input type="hidden" name="r<?php echo $dato->getRequerimiento()->getId() ?>" value="<?php echo $dato->getRequerimiento()->getId() ?>"><?php echo $dato->getRequerimiento()->getDescripcion(); ?></td>
-							<td class="text-center"><input type="radio" <?php if($dato->getEstado() == 1) echo "checked" ?> name="op<?php echo $dato->getRequerimiento()->getId() ?>" value="1" ></td>
-							<td class="text-center"><input type="radio" <?php if($dato->getEstado() == 2) echo "checked" ?> name="op<?php echo $dato->getRequerimiento()->getId() ?>" value="2" ></td>
-							<td class="text-center"><input type="radio" <?php if($dato->getEstado() == 0) echo "checked" ?> name="op<?php echo $dato->getRequerimiento()->getId() ?>" value="0" ></td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-			<button type="submit" class="btn btn-primary" >Guardar</button> 
-		</form>
+	<div class="panel-heading">
+		<h3 class="panel-title">Listado</h3>
+	</div>
+	<div class="panel-body">
+		<ul class="nav nav-tabs" style="margin-bottom:10px;">
+			<?php $active = "class='active'"; ?>
+			<?php foreach ($this->tiposReq as $key => $value) { ?>
+				<li <?php echo $active; $active = ""; ?>><a href="" id="#tipoNav<?php echo $key+1 ?>" data-toggle="tab"><?php echo $value->getDescripcion(); ?></a></li>
+			<?php } ?>
+    	</ul>
+    	<?php $active = "class='active'"; ?>
+    	<?php foreach ($this->tiposReq as $key => $value) { ?>
+        <div class="tab-content">
+	        <div class="tab-panel <?php echo $active; $active = ""; ?>" id="tipo<?php echo $key+1; ?>"> 
+				  	<form role="form" method="post" enctype="multipart/form-data">
+				  		<input type="hidden" name="guardar" value="1">
+							<table class="table table-striped table-bordered table-hover" id="dataTablesAdvanced">
+								<thead>
+									<tr>
+										<th>Requisitos de Viabilizacion</th>
+										<th class="text-center" style="width:60px">SI</th>
+										<th class="text-center" style="width:60px">NO</th>
+										<th class="text-center" style="width:60px">N/A</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($this->datos as $keyInt => $dato) { ?>
+									<?php if($dato->getRequerimiento()->getTipo() == $value->getId()){ ?>
+									<tr>
+										<td><input type="hidden" name="r<?php echo $dato->getRequerimiento()->getId() ?>" value="<?php echo $dato->getRequerimiento()->getId() ?>"><?php echo $dato->getRequerimiento()->getDescripcion(); ?></td>
+										<td class="text-center"><input type="radio" <?php if($dato->getEstado() == 1) echo "checked" ?> name="op<?php echo $dato->getRequerimiento()->getId() ?>" value="1" ></td>
+										<td class="text-center"><input type="radio" <?php if($dato->getEstado() == 2) echo "checked" ?> name="op<?php echo $dato->getRequerimiento()->getId() ?>" value="2" ></td>
+										<td class="text-center"><input type="radio" <?php if($dato->getEstado() == 0) echo "checked" ?> name="op<?php echo $dato->getRequerimiento()->getId() ?>" value="0" ></td>
+									</tr>
+									<?php } ?>
+								<?php } ?>
+							</tbody>
+						</table>
+						<button type="submit" class="btn btn-primary" >Guardar</button> 
+					</form>
+			</div>
+		</div>
+		<?php } ?>
 	  </div>
 </div>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$("#tipo2").css('display', 'none');
+		$("#tipo3").css('display', 'none');
+
+		$("#tipoNav1").click(function(event) {
+			$("#tipo1").css('display', 'block');
+			$("#tipo2").css('display', 'none');
+			$("#tipo3").css('display', 'none');
+		});
+
+		$("#tipoNav2").click(function(event) {
+			alert();
+			$("#tipo2").css('display', 'block');
+			$("#tipo1").css('display', 'none');
+			$("#tipo3").css('display', 'none');
+		});
+
+		$("#tipoNav3").click(function(event) {
+			$("#tipo3").css('display', 'block');
+			$("#tipo1").css('display', 'none');
+			$("#tipo3").css('display', 'none');
+		});
+
+	});
+</script>

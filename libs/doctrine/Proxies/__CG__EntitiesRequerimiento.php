@@ -64,10 +64,10 @@ class Requerimiento extends \Entities\Requerimiento implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'descripcion', 'estado');
+            return array('__isInitialized__', 'id', 'descripcion', 'tipo', 'estado');
         }
 
-        return array('__isInitialized__', 'id', 'descripcion', 'estado');
+        return array('__isInitialized__', 'id', 'descripcion', 'tipo', 'estado');
     }
 
     /**
@@ -219,6 +219,28 @@ class Requerimiento extends \Entities\Requerimiento implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDescripcion', array());
 
         return parent::getDescripcion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipo($tipo)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipo', array($tipo));
+
+        return parent::setTipo($tipo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipo', array());
+
+        return parent::getTipo();
     }
 
     /**
