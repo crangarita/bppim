@@ -280,7 +280,7 @@ class proyectoController extends Controller
         }
 
         if($this->getInt('guardar') == 1){
-            
+
             $requerimientos = $this->_requerimiento->findBy(array('estado' => 1));
             foreach ($requerimientos as $key => $value) {
 
@@ -296,8 +296,10 @@ class proyectoController extends Controller
 
         }
 
-        $this->_view->tiposReq = $this->_tipoRequerimiento->resultList();
-        $this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
+        $this->_view->datos1 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo",array('tipo' => 1));
+        $this->_view->datos2 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo",array('tipo' => 2));
+        $this->_view->datos3 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo",array('tipo' => 3));
+        //$this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
         $this->_view->titulo = "Requerimientos";
         $this->_view->renderizar('requerimiento', ucwords(strtolower($this->_presentRequest->getControlador())));      
 

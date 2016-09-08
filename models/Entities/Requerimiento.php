@@ -33,9 +33,12 @@ function __construct() {}
     private $descripcion;
 
     /**
-     * @var integer
+     * @var \Tipo
      *
-     * @Column(name="tipo", type="integer")
+     * @ManyToOne(targetEntity="TipoRequerimiento")
+     * @JoinColumns({
+     *   @JoinColumn(name="tipo", referencedColumnName="id")
+     * })
      */
     private $tipo;
 
