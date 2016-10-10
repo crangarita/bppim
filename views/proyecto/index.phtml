@@ -29,6 +29,7 @@
 									<?php } ?>
 									<?php if(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() != null){ ?>
 										<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
+										<a title="Concepto sectorial" href="<?php echo BASE_URL . 'proyecto/conceptosectorial/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial"> </span></a>
 										<?php if($dato->getCodigoBppim() == null){ ?>
 											<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
 										<?php } ?>

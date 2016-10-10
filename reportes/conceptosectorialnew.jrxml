@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="conceptosectorial" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15cbd11d-4f85-4c05-afc2-3558505bd175">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="150"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="proyecto" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  `requerimiento`.`tipo`,
+  upper(`tiporequerimiento`.`descripcion`) tiporeq,
+  `requerimiento`.`numero`,
+  `requerimiento`.`id`,
+  `requerimiento`.`descripcion` req,
+  `proyecto`.`codigobppim`,
+  `proyecto`.`nombre`,
+  `sector`.`descripcion` sector,
+  `proyecto`.`valor`,
+  `proyecto`.`numbeneficiario`,
+  `proyecto`.`meses`,
+  `vigencia`.`descripcion` vigencia,
+  case when `proyectoreq`.`estado` = 1 then 'X' else '' end si,
+  case when `proyectoreq`.`estado` = 2 then 'X' else '' end no,
+  case when `proyectoreq`.`estado` = 0 or `proyectoreq`.`estado` is null then 'X' else '' end na,
+  case when `tiporequerimiento`.`tieneobs` = 0 then 'Responsable'
+  else 'Observación' end tieneobser
+FROM
+  `tiporequerimiento`
+  INNER JOIN `requerimiento` ON (`tiporequerimiento`.`id` = `requerimiento`.`tipo`)
+  INNER JOIN `proyectoreq` ON (`requerimiento`.`id` = `proyectoreq`.`requerimiento`)
+  INNER JOIN `proyecto` ON (`proyectoreq`.`proyecto` = `proyecto`.`id`)
+  INNER JOIN `sector` ON (`proyecto`.`sector` = `sector`.`id`)
+  INNER JOIN `vigencia` ON (`proyecto`.`vigencia` = `vigencia`.`id`)
+WHERE
+  `proyecto`.`id` = $P{proyecto}]]>
+	</queryString>
+	<field name="tipo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tiporeq" class="java.lang.String"/>
+	<field name="numero" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="req" class="java.lang.String"/>
+	<field name="codigobppim" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sector" class="java.lang.String"/>
+	<field name="valor" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numbeneficiario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="meses" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vigencia" class="java.lang.String"/>
+	<field name="si" class="java.lang.String"/>
+	<field name="no" class="java.lang.String"/>
+	<field name="na" class="java.lang.String"/>
+	<field name="tieneobser" class="java.lang.String"/>
+	<group name="proyecto">
+		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="125">
+				<rectangle>
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="60" width="572" height="30" uuid="95f45f02-c3d9-4186-8c1f-c5bf87f2cf84"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="90" width="572" height="30" uuid="e18b1e6b-e051-4ad3-8576-871875d383f8"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="32" width="572" height="28" uuid="549b1428-9a66-4b81-8568-c1c006c619c3"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement x="91" y="7" width="482" height="25" uuid="672a7fb8-4c2b-4fb4-8556-25da55513b4f"/>
+					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="87" y="2" width="1" height="30" uuid="bbba392d-c98b-4dca-8125-1a3e1da31347"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<rectangle>
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="2" width="572" height="30" uuid="b7bbb8cb-04d1-40d2-b95e-80b86f1c3f69"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="230" y="32" width="1" height="28" uuid="49d794c3-9ae3-47af-9deb-9a070aa080ff"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="346" y="60" width="31" height="30" uuid="5eec764f-dad4-44f9-bab4-c394ce0529e6"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{meses}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="62" y="60" width="38" height="30" uuid="2c4f5244-38bc-4de1-ba29-cf139ba82b13"/>
+					<textFieldExpression><![CDATA[$F{vigencia}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="163" y="60" width="43" height="30" uuid="70b05540-b477-4436-9a72-8834789c4a53"/>
+					<textFieldExpression><![CDATA[$F{vigencia}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="186" y="90" width="1" height="30" uuid="ca8834c3-1785-4c7f-882b-69706f745083"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="158" y="60" width="1" height="30" uuid="54ce7fbc-9206-46ac-8e77-7bea8f41cf7c"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="206" y="60" width="1" height="30" uuid="adeeaa72-8306-4e18-bd13-7994f2ab3699"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="303" y="90" width="1" height="30" uuid="e2a25512-3345-45f5-a7b6-6ab3bd9440ff"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="100" y="60" width="1" height="30" uuid="39c3f690-68cb-4622-ba0b-ce54e37077f3"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="58" y="60" width="1" height="30" uuid="73c5ca3e-bc31-4913-a748-2b27db3654ff"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="67" y="90" width="114" height="30" uuid="bf74bb54-2ab6-4830-8eb1-04632a8ba613"/>
+					<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0">
+					<reportElement x="478" y="60" width="90" height="30" uuid="adc4cfb3-5bff-49dc-950a-6af7b2b59a43"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="468" y="60" width="1" height="30" uuid="d0d80258-f8a4-4de6-b343-9aa8b0d220ae"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="379" y="60" width="1" height="30" uuid="8e509200-691c-4235-ad5c-1153ba4082f7"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="344" y="60" width="1" height="30" uuid="3a811c41-dc92-4784-8c61-8719e36edb0d"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="4" y="7" width="87" height="25" uuid="29595a78-780c-4c5f-b9b3-e7a7654372e6"/>
+					<text><![CDATA[Proyecto]]></text>
+				</staticText>
+				<line>
+					<reportElement x="62" y="90" width="1" height="30" uuid="cda44418-0de2-4ec1-aca5-5c0acd176526"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="4" y="32" width="216" height="28" uuid="9ff33566-f860-4895-b8f3-2348c0217977"/>
+					<textFieldExpression><![CDATA["Nombre de la secretaría que emite el Concepto Sectorial"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="4" y="61" width="54" height="28" uuid="386cb6cd-8749-4b66-a7cd-53fb860c4575"/>
+					<textFieldExpression><![CDATA["Vigencia Inicial:"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="104" y="61" width="54" height="28" uuid="6ff18d78-eb25-4d6a-8098-e2d25a77f601"/>
+					<textFieldExpression><![CDATA["Vigencia Final:"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="4" y="90" width="54" height="30" uuid="a7d326ab-3445-487e-bfd6-5d15142ae4fc"/>
+					<textFieldExpression><![CDATA["Sector Inversión::"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="190" y="90" width="109" height="30" uuid="151899cc-223f-428f-96d1-2977ca3f4cd8"/>
+					<textFieldExpression><![CDATA["Valor solicitado al municipio por vigencia ::"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="212" y="61" width="134" height="28" uuid="70ae1b0b-af9e-42c2-a4db-60c6ca671eb2"/>
+					<textFieldExpression><![CDATA["Tiempo de ejecución (en meses):"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="384" y="61" width="84" height="28" uuid="b6b2b3a4-ac39-41e8-966f-0660d51cb063"/>
+					<textFieldExpression><![CDATA["Valor total del Proyecto:"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="tiporeq">
+		<groupExpression><![CDATA[$F{tipo}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<line>
+					<reportElement stretchType="RelativeToBandHeight" x="371" y="1" width="1" height="20" uuid="81d43d5c-a003-46b1-9dec-366d793300ce"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<rectangle>
+					<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="1" width="572" height="20" uuid="056257e6-7451-4d4b-84c1-05e3d1a511c4"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="309" y="1" width="31" height="20" uuid="3d795f2f-2fcc-4e4d-a6d2-23c87991fcde"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Si]]></text>
+				</staticText>
+				<line>
+					<reportElement stretchType="RelativeToBandHeight" x="309" y="1" width="1" height="20" uuid="243985ee-d455-4357-bef3-676289ce37df"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement stretchType="RelativeToBandHeight" x="340" y="1" width="1" height="20" uuid="d23f5525-d4e2-4c8b-b65c-990e53b33d12"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="413" y="1" width="160" height="20" uuid="d87c9d1a-e2b1-4998-90f3-057dd7af3bec"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tieneobser}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="340" y="1" width="31" height="20" uuid="3a1aa703-5ffe-4d59-89b1-eae72e26fae6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[No]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="21" y="0" width="266" height="20" uuid="f3020fcc-233b-4f79-be0f-938c9c6049d3"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{tiporeq}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="371" y="1" width="31" height="20" uuid="dc46123e-f218-4242-94de-55fc1466187e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[NA]]></text>
+				</staticText>
+				<line>
+					<reportElement stretchType="RelativeToBandHeight" x="402" y="1" width="1" height="20" uuid="3e4f6b90-f4b5-496a-a9a7-5e74c84a9dd7"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="94" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="572" height="89" uuid="52372138-d72a-40e2-a3f6-e596998bd57f"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="513" y="65" width="17" height="20" uuid="3095f458-af40-42cf-be0e-470ec1fd62e4"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="7" width="151" height="20" uuid="d05ac622-1d57-4d1a-8d3f-2b5cca553ab2"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ME-GJ-FO-002]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="7" width="202" height="20" uuid="92715da3-92e6-4026-b4e9-1f2e1abe2fde"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MACROPROCESO DE APOYO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="65" width="71" height="20" uuid="4a4c2deb-a985-47a4-b33f-b1f45f61e8db"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pagina: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="37" width="74" height="20" uuid="65fe3152-48b7-4c78-b65a-db35724faf23"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FECHA 08/13]]></text>
+			</staticText>
+			<image>
+				<reportElement x="2" y="3" width="215" height="86" uuid="798259a6-eb42-46e7-9c32-9ff8b263f937"/>
+				<imageExpression><![CDATA["logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="220" y="65" width="202" height="20" uuid="cd486025-293b-4c97-b27e-1a25d6e818c5"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DEL SUPERVISOR]]></text>
+			</staticText>
+			<line>
+				<reportElement x="218" y="0" width="1" height="89" uuid="a70aed63-a105-45e9-aceb-8ee228ae88fc"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="421" y="0" width="1" height="89" uuid="83e9bb0f-600f-4751-b3ae-413b17c36ffb"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="219" y="58" width="353" height="1" uuid="1c2ed821-0347-4c54-a596-a155522d586d"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="496" y="37" width="76" height="20" uuid="e1a9643c-76ae-46c5-9134-744d6ab9a789"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN 1]]></text>
+			</staticText>
+			<line>
+				<reportElement x="496" y="30" width="1" height="27" uuid="076d7ca0-6d69-4d94-a0c2-b831a870dad8"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="220" y="37" width="202" height="20" uuid="3234516d-cca8-480e-9f4d-4e512a597f84"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROCESO GESTIÓN JURÍDICA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="218" y="30" width="354" height="1" uuid="45362758-ca5e-42ea-8765-662e161f9100"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="1" y="0" width="572" height="27" uuid="6de8641f-6826-4e46-bf4f-f5d15ef68721"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="21" y="0" width="288" height="27" uuid="11c5bb20-f662-47be-9945-000f57aff4f6"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{req}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="1" height="27" uuid="07857823-9352-49a0-b66c-b907a52be1ed"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="371" y="0" width="1" height="27" uuid="b8bb3ad3-3eb9-443a-9a3d-5a28e5ba37b1"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="402" y="0" width="1" height="27" uuid="f106c8bd-1a8f-4652-b748-531cd279fd6d"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="340" y="0" width="31" height="27" uuid="28a87320-2ef5-4011-9d4b-dc5bc8c48f7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="0" width="31" height="27" uuid="671013ae-b2b2-4656-8043-3755f306b1e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{si}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="371" y="0" width="31" height="27" uuid="050c2a14-2ea8-407e-bc8c-3834dae3dfe3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{na}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="0" width="20" height="27" uuid="0bdc3384-1083-43cb-a007-931e1242d541"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="309" y="0" width="1" height="27" uuid="4249cc62-d8b2-4b0a-a52b-0c0f4c09cdd1"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

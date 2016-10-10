@@ -37,7 +37,7 @@ class Jasperpdf
 		include_once('class/PHPJasperXML.inc.php');
 		include_once('setting.php');
 		
-		$xml =  simplexml_load_file("reportes/conceptosectorial.jrxml");
+		$xml =  simplexml_load_file("reportes/conceptosectorialnew.jrxml");
 
 		$PHPJasperXML = new PHPJasperXML();
 		//$PHPJasperXML->debugsql=true;

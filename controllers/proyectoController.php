@@ -296,9 +296,9 @@ class proyectoController extends Controller
 
         }
 
-        $this->_view->datos1 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo",array('tipo' => 1));
-        $this->_view->datos2 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo",array('tipo' => 2));
-        $this->_view->datos3 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo",array('tipo' => 3));
+        $this->_view->datos1 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.proyecto p JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo AND p.id=:idproy",array('tipo' => 1, 'idproy' => $proyecto ));
+        $this->_view->datos2 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.proyecto p JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo AND p.id=:idproy",array('tipo' => 2, 'idproy' => $proyecto ));
+        $this->_view->datos3 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.proyecto p JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo AND p.id=:idproy",array('tipo' => 3, 'idproy' => $proyecto ));
         //$this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
         $this->_view->titulo = "Requerimientos";
         $this->_view->renderizar('requerimiento', ucwords(strtolower($this->_presentRequest->getControlador())));      
