@@ -11,7 +11,7 @@ namespace Entities;
  * @Table(name="proyectoreq")
  * @Entity
  */
-class ProyectoReq
+class Proyectoreq
 {
 
 function __construct() {}

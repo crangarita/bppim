@@ -35,7 +35,7 @@ function __construct() {}
     /**
      * @var \Tipo
      *
-     * @ManyToOne(targetEntity="TipoRequerimiento")
+     * @ManyToOne(targetEntity="Tiporequerimiento")
      * @JoinColumns({
      *   @JoinColumn(name="tipo", referencedColumnName="id")
      * })

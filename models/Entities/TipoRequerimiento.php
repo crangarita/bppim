@@ -11,7 +11,7 @@ namespace Entities;
  * @Table(name="tiporequerimiento")
  * @Entity
  */
-class TipoRequerimiento
+class Tiporequerimiento
 {
 
 function __construct() {}
@@ -28,7 +28,7 @@ function __construct() {}
     /**
      * @var string
      *
-     * @Column(name="descripcion", type="string", length=40)
+     * @Column(name="descripcion", type="string", length=50)
      */
     private $descripcion;
 
