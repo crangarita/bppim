@@ -62,7 +62,7 @@
 			<div class="form-group">
 				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >N&uacute;mero Radicado: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="numRadicado" class="form-control disabled required" value="<?php echo $this->dato->getNumRadicado(); ?>" />
+					<input name="numRadicado" class="form-control required" disabled value="<?php echo $this->dato->getNumRadicado(); ?>" />
 				</div>
 			</div>
 
@@ -190,7 +190,9 @@
 				<thead>
 					<tr>
 						<th>Entidad Asignada</th>
+						<th>Funcionario</th>
 						<th>Fecha Asignacion</th>
+						<th>Fecha Limite</th>
 						<th>Fecha Devolucion</th>
 						<th class="text-center no-sort" >Acción</th>
 					</tr>
@@ -199,12 +201,13 @@
 					<?php foreach ($this->dato->getAsignaciones() as $key => $dato) { ?>
 						<tr>
 							<td><?php echo $dato->getEntidad()->getNombre(); ?></td>
+							<td><?php echo $dato->getFuncionario()->getNombre(); ?></td>
 							<td><?php echo $dato->getFechaAsig()->format("d/m/Y"); ?></td>
-							<td></td>
+							<td><?php echo $dato->getFechaLimite()->format("d/m/Y"); ?></td>
+							<td><?php if($dato->getFechaEntrega() != null) echo $dato->getFechaEntrega()->format("d/m/Y"); ?></td>
 							<td class="text-center">
-
 								<a href="<?php echo BASE_URL . 'proyecto/cartasignacion/' . $dato->getProyecto()->getId().'/'.$dato->getEntidad()->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-file-text" title="Generar Carta de Asignacion"> </span></a>
-
+								<a href="<?php echo BASE_URL . 'proyecto/conceptosectorialblanco/' .  $this->dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial Vacio"> </span></a>
 							</td>
 						</tr>
 					<?php } ?>

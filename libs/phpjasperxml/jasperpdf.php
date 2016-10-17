@@ -49,75 +49,42 @@ class Jasperpdf
 
 	}
 
-
-	function generarMantenimiento($id=""){
+	function generarConceptosectorialvacio($proyecto=1){
 		
 		include_once('class/tcpdf/tcpdf.php');
 		include_once('class/PHPJasperXML.inc.php');
 		include_once('setting.php');
 		
-		$xml =  simplexml_load_file("reportes/fichamantenimiento.jrxml");
-		//$xml =  simplexml_load_file("reportes/fichamantenimiento.jrxml");
+		$xml =  simplexml_load_file("reportes/conceptosectorialvacio.jrxml");
 
 		$PHPJasperXML = new PHPJasperXML();
 		//$PHPJasperXML->debugsql=true;
-		
-		
-
-		$PHPJasperXML->arrayParameter=array("idmantenimiento"=>$id);
+		$PHPJasperXML->arrayParameter=array("proyecto"=>$proyecto);
 		$PHPJasperXML->xml_dismantle($xml);
-		
+
 		$PHPJasperXML->transferDBtoArray($server,$user,$pass,$db);
-		
-		$PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+		$PHPJasperXML->outpage("D");    //page output method I:standard output  D:Download file
 
 	}
 
-	function generarCorrectivo($id=""){
+	function generarCertificado($proyecto=1){
 		
 		include_once('class/tcpdf/tcpdf.php');
 		include_once('class/PHPJasperXML.inc.php');
 		include_once('setting.php');
 		
-		$xml =  simplexml_load_file("reportes/fichacorrectivo.jrxml");
-		//$xml =  simplexml_load_file("reportes/fichamantenimiento.jrxml");
+		$xml =  simplexml_load_file("reportes/cartacertificacion.jrxml");
 
 		$PHPJasperXML = new PHPJasperXML();
 		//$PHPJasperXML->debugsql=true;
-		
-		
-
-		$PHPJasperXML->arrayParameter=array("idmantenimiento"=>$id);
+		$PHPJasperXML->arrayParameter=array("proyecto"=>$proyecto);
 		$PHPJasperXML->xml_dismantle($xml);
-		
+
 		$PHPJasperXML->transferDBtoArray($server,$user,$pass,$db);
-		
-		$PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
+		$PHPJasperXML->outpage("D");    //page output method I:standard output  D:Download file
 
 	}
-
-	function generarPreventivo($id=""){
-		
-		include_once('class/tcpdf/tcpdf.php');
-		include_once('class/PHPJasperXML.inc.php');
-		include_once('setting.php');
-		
-		$xml =  simplexml_load_file("reportes/fichapreventivo.jrxml");
-		//$xml =  simplexml_load_file("reportes/fichamantenimiento.jrxml");
-
-		$PHPJasperXML = new PHPJasperXML();
-		//$PHPJasperXML->debugsql=true;
-		
-		
-
-		$PHPJasperXML->arrayParameter=array("idmantenimiento"=>$id);
-		$PHPJasperXML->xml_dismantle($xml);
-		
-		$PHPJasperXML->transferDBtoArray($server,$user,$pass,$db);
-		
-		$PHPJasperXML->outpage("I");    //page output method I:standard output  D:Download file
-
-	}
+	
 }
 
 ?>

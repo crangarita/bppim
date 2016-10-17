@@ -8,7 +8,7 @@ define('DEFAULT_LAYOUT', 'default');
 
 define('APP_NAME', 'Sistema de Gestion del Banco de Proyectos de Inversión Municipal');
 define('APP_EMAIL', 'contacto@bppim.co');
-define('APP_SLOGAN', 'Simon Gestion');
+define('APP_SLOGAN', 'Gestion');
 define('APP_COMPANY', 'www.bppim.co');
 define('SESSION_TIME', 100);
 define('HASH_KEY', '4f6a6d832be79');

@@ -64,10 +64,10 @@ class Vigencia extends \Entities\Vigencia implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'descripcion', 'ano');
+            return array('__isInitialized__', 'id', 'descripcion', 'ano', 'actual');
         }
 
-        return array('__isInitialized__', 'id', 'descripcion', 'ano');
+        return array('__isInitialized__', 'id', 'descripcion', 'ano', 'actual');
     }
 
     /**
@@ -241,6 +241,28 @@ class Vigencia extends \Entities\Vigencia implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAno', array());
 
         return parent::getAno();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setActual($actual)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setActual', array($actual));
+
+        return parent::setActual($actual);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getActual()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getActual', array());
+
+        return parent::getActual();
     }
 
 }

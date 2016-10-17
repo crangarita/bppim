@@ -88,59 +88,20 @@ class View
                 'ico' => '<i class="fa fa-pie-chart fa-fw"></i> ',
                 'enlace' => BASE_URL.'informe/'
                 );
+             /*$menu[] = array(
+                'id' => 'vigencia',
+                'titulo' => 'Vigencia',
+                'ico' => '<i class="fa fa-certificate fa-fw"></i> ',
+                'enlace' => BASE_URL.'vigencia/'
+                );*/
         }
         if(Session::accesoViewEstricto(array('veterinario'),true)){
-            $menu[] = array(
-                'id' => 'agenda',
-                'titulo' => 'Agenda',
-                'ico' => '<i class="fa fa-list fa-fw"></i> ',
-                'enlace' => BASE_URL.'agenda/'
-                );
-            $menu[] = array(
-                'id' => 'mascota',
-                'titulo' => 'Mascota',
-                'ico' => '<i class="fa fa-paw fa-fw"></i> ',
-                'enlace' => BASE_URL.'mascota/'
-                );
-            $menu[] = array(
-                'id' => 'cliente',
-                'titulo' => 'Cliente',
-                'ico' => '<i class="fa fa-user fa-fw"></i> ',
-                'enlace' => BASE_URL.'cliente/'
-                );
-            $menu[] = array(
-                'id' => 'vacuna',
-                'titulo' => 'Vacuna',
-                'ico' => '<i class="fa fa-heartbeat fa-fw"></i> ',
-                'enlace' => BASE_URL.'vacuna/'
-                );
-            $menu[] = array(
-                'id' => 'servicio',
-                'titulo' => 'Servicio',
-                'ico' => '<i class="fa fa-medkit fa-fw"></i> ',
-                'enlace' => BASE_URL.'servicio/'
-                );
+            
         }
-        /*if(!Session::get('autenticado')){
-             $menu[] = array(
-                'id' => 'Comentarios',
-                'titulo' => 'Comentarios',
-                'ico' => '<i class="fa fa-comment fa-fw"></i> ',
-                'enlace' => BASE_URL.'bomba/comentarios/'
-                );
-            $menu[] = array(
-                'id' => 'sugerencia',
-                'titulo' => 'Sugerir',
-                'ico' => '<i class="fa fa-plus fa-fw"></i> ',
-                'enlace' => BASE_URL.'bomba/sugerir/'
-                );
-            $menu[] = array(
-                'id' => 'login',
-                'ico' => '<i class="fa fa-sign-in fa-fw"></i> ',
-                'titulo' => 'Iniciar Sesion',
-                'enlace' => BASE_URL . 'login/iniciar/'
-                );
-        }*/
+
+        if(!Session::get('autenticado')){
+             
+        }
 
         
         $js = array();

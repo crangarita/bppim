@@ -13,6 +13,7 @@ class proyectoController extends Controller
         $this->_sector = $this->loadModel('sector');
         $this->_asignacion = $this->loadModel('asignacion');
         $this->_vigencia = $this->loadModel('vigencia');
+        $this->_configuracion = $this->loadModel('configuracion');
 
         $this->_requerimiento = $this->loadModel('requerimiento');
         $this->_tipoRequerimiento = $this->loadModel('tipoRequerimiento');
@@ -33,52 +34,12 @@ class proyectoController extends Controller
         $this->_view->entidades = $this->_entidad->resultList();
         $this->_view->funcionarios = $this->_funcionario->resultList();
         $this->_view->estados = $this->_estado->resultList();
+        $this->_view->estadosConcluir = $this->_estado->dql("SELECT e FROM Entities\Estado e WHERE e.id=:est1 OR e.id=:est2",array('est1' => 2, 'est2' => 5));
 
     	$this->_view->setJsP(array('dataTables/jquery.dataTables','dataTables/dataTables.bootstrap'));
         $this->_view->setCssP(array('dataTables.bootstrap'));
 
         $this->_view->renderizar('index', ucwords(strtolower($this->_presentRequest->getControlador())));
-    }
-
-    public function get()
-    {
-        $this->_model = $this->loadModel($this->_presentRequest->getControlador());
-
-    	header('Content-type: application/json');
-        
-        $arrayRta = array('error'=>false);
-
-        if(!$_POST){
-            $arrayRta['error'] = 'Error';
-            echo json_encode($arrayRta);
-            exit;   
-        }
-
-        if($this->getInt('id')<1){
-            $arrayRta['error'] = 'Error de id';
-            echo json_encode($arrayRta);
-            exit;   
-        }
-
-        $obj = $this->_model->get($this->getInt('id'));
-        if(!$obj){
-        	$arrayRta['error'] = ' Elemento no existe';
-            echo json_encode($arrayRta);
-            exit; 
-        }
-
-        $datos = array();
-
-        $datos['Cod Bppim'] = $obj->getCodigoBppim();
-        $datos['Nombre'] = $obj->getNombre();
-        $datos['Proponente'] = $obj->getProponente();
-        $datos['Categoria'] = $obj->getCategoria()->getDescripcion();
-        $datos['Sector'] = $obj->getSector()->getDescripcion();
-        $datos['Estado'] = $obj->getEstado()->getDescripcion();
-
-        $arrayRta['datos'] = $datos;
-        echo json_encode($arrayRta);
-        exit; 
     }
 
     public function agregar()
@@ -141,28 +102,44 @@ class proyectoController extends Controller
         
         if($new){
 
-            $sql = "SELECT MAX(NUMRADICADO) AS RADICADO FROM PROYECTO";
+            $sql = "SELECT MAX(NUMRADICADO) AS RADICADO FROM proyecto";
             $temp = $this->_estado->nativeQuery($sql);
             $radicado = $temp[0]['RADICADO'];
             $radicadoInt = intval($radicado);
             $radicadoFinal = "0000".($radicadoInt+1);
 
+            $vigencia = $this->_vigencia->findByObject(array('actual' => 1));
+
             $this->_model->getInstance()->setNumRadicado($radicadoFinal);
             $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
             $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
             $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
+            $this->_model->getInstance()->setValor($this->getTexto('valor'));
             $this->_model->getInstance()->setEstado($this->_estado->get(1));
             $this->_model->getInstance()->setCategoria($this->_categoria->get($this->getInt('categoria')));
             $this->_model->getInstance()->setSector($this->_sector->get($this->getInt('sector')));
             $this->_model->getInstance()->setFechaCreacion(new \DateTime());
             $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));
+
+            $this->_model->getInstance()->setVigencia($vigencia);
         
-            $this->_model->save(); 
+            $this->_model->save();
+
+            $requerimientos = $this->_requerimiento->findBy(array('estado' => 1));
+            foreach ($requerimientos as $key => $value) {
+                $this->_proyectoReq = $this->loadModel("proyectoReq");
+                $this->_proyectoReq->getInstance()->setProyecto($this->_model->getInstance());
+                $this->_proyectoReq->getInstance()->setRequerimiento($this->_requerimiento->get($value->getId()));
+                $this->_proyectoReq->getInstance()->setFecha(new \DateTime());
+                $this->_proyectoReq->getInstance()->setEstado(0);
+                $this->_proyectoReq->save();
+            }
+
+
             Session::set('mensaje','Registro Creado con Exito.');
 
         }else{
 
-            $this->_model->getInstance()->setNumRadicado($this->getTexto('numRadicado'));
             $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
             $this->_model->getInstance()->setCodigobppim($this->getTexto('codigoBPPIM'));
             $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
@@ -236,17 +213,25 @@ class proyectoController extends Controller
 
         $this->_proyecto->findByObject(array('id' => $codigo));
 
-        $sql = "SELECT MAX(CODIGOBPPIM) AS MAXCOD FROM PROYECTO WHERE VIGENCIA = ".$this->_proyecto->getInstance()->getVigencia()->getId()."";
+        $sql = "SELECT MAX(CODIGOBPPIM) AS MAXCOD FROM proyecto WHERE VIGENCIA = ".$this->_proyecto->getInstance()->getVigencia()->getId()."";
 
         $rta = $this->_proyecto->nativeQuery($sql);
 
-        if (count($rta)){
+        if ($rta[0]['MAXCOD'] != null){
             $rta = $rta[0];
             $maximo = $rta['MAXCOD'];
             $texto = explode("-",$maximo);
-            $valor = ((int)$texto[2])+1;
-            $codigo = $texto[0]."-".$texto[1]."-".str_pad($valor, 4, '0', STR_PAD_LEFT);
+        }else{
+            $this->_vigencia->findByObject(array('actual' => 1));
+            $this->_configuracion->findByObject(array());
+            $texto = array();
+            $texto[0] = $this->_vigencia->getInstance()->getAno();
+            $texto[1] = $this->_configuracion->getInstance()->getMunicipio();
+            $texto[2] = 0;
         }
+        
+        $valor = ((int)$texto[2])+1;
+        $codigo = $texto[0]."-".$texto[1]."-".str_pad($valor, 4, '0', STR_PAD_LEFT);
 
         $this->_proyecto->getInstance()->setCodigoBppim($codigo);
 
@@ -299,7 +284,6 @@ class proyectoController extends Controller
         $this->_view->datos1 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.proyecto p JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo AND p.id=:idproy",array('tipo' => 1, 'idproy' => $proyecto ));
         $this->_view->datos2 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.proyecto p JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo AND p.id=:idproy",array('tipo' => 2, 'idproy' => $proyecto ));
         $this->_view->datos3 = $this->_proyectoReq->dql("SELECT pr FROM Entities\ProyectoReq pr JOIN pr.proyecto p JOIN pr.requerimiento r JOIN r.tipo t WHERE t.id =:tipo AND p.id=:idproy",array('tipo' => 3, 'idproy' => $proyecto ));
-        //$this->_view->datos = $this->_proyectoReq->findBy(array('proyecto' => $proyecto));
         $this->_view->titulo = "Requerimientos";
         $this->_view->renderizar('requerimiento', ucwords(strtolower($this->_presentRequest->getControlador())));      
 
@@ -333,7 +317,6 @@ class proyectoController extends Controller
         $pdf->generarCartasignacion($proyecto,$entidad);
     }
 
-
     public function conceptosectorial($proyecto=1){
         
         $this->getLibrary('phpjasperxml/jasperpdf');
@@ -341,6 +324,24 @@ class proyectoController extends Controller
         $pdf = new Jasperpdf();
         
         $pdf->generarConceptosectorial($proyecto);
+    }
+
+    public function conceptosectorialblanco($proyecto=1){
+        
+        $this->getLibrary('phpjasperxml/jasperpdf');
+        
+        $pdf = new Jasperpdf();
+        
+        $pdf->generarConceptosectorialvacio($proyecto);
+    }
+
+    public function certificadobppim($proyecto=1){
+        
+        $this->getLibrary('phpjasperxml/jasperpdf');
+        
+        $pdf = new Jasperpdf();
+        
+        $pdf->generarCertificado($proyecto);
     }
 
 }

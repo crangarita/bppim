@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="conceptosectorial" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="15cbd11d-4f85-4c05-afc2-3558505bd175">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="150"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="148"/>
+	<property name="ireport.y" value="270"/>
 	<parameter name="proyecto" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -24,7 +24,9 @@
   case when `proyectoreq`.`estado` = 2 then 'X' else '' end no,
   case when `proyectoreq`.`estado` = 0 or `proyectoreq`.`estado` is null then 'X' else '' end na,
   case when `tiporequerimiento`.`tieneobs` = 0 then 'Responsable'
-  else 'Observación' end tieneobser
+  else 'Observación' end tieneobser,
+  case when proyecto.estado = 2 then 'Positivo'
+  else 'Negativo' end estadocer
 FROM
   `tiporequerimiento`
   INNER JOIN `requerimiento` ON (`tiporequerimiento`.`id` = `requerimiento`.`tipo`)
@@ -67,6 +69,7 @@ WHERE
 	<field name="no" class="java.lang.String"/>
 	<field name="na" class="java.lang.String"/>
 	<field name="tieneobser" class="java.lang.String"/>
+	<field name="estadocer" class="java.lang.String"/>
 	<group name="proyecto">
 		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
 		<groupHeader>
@@ -227,6 +230,137 @@ WHERE
 				</textField>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="128">
+				<rectangle>
+					<reportElement mode="Transparent" x="0" y="0" width="572" height="128" uuid="21717e04-2b95-419d-a37b-ba2287f57955"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="0" y="22" width="572" height="1" uuid="28515362-e01d-41e3-a961-84581eb3c48b"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="51" width="572" height="1" uuid="14ed701f-e38a-4b3a-b64f-99944e4f2ca3"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="108" width="572" height="1" uuid="588ddd63-8143-4225-ad05-b34888bfb04a"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="0" y="86" width="572" height="1" uuid="50f8aa24-40ca-4618-aadd-4caabff91432"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="2" y="0" width="177" height="20" uuid="f687e298-c580-47a7-914b-04203de93da6"/>
+					<textFieldExpression><![CDATA["Observaciones Generales"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="2" y="22" width="177" height="20" uuid="eb4b6843-abdd-4b6e-82bb-885b5228e480"/>
+					<textFieldExpression><![CDATA["Concepto de Viabilidad"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="427" y="22" width="54" height="28" uuid="b2f1c241-3533-4b25-aa6c-2e6b32b4edac"/>
+					<textFieldExpression><![CDATA["Fecha del Concepto:"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="484" y="22" width="1" height="30" uuid="e05fefd3-18b5-4fc3-a5da-818c76e40e88"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="422" y="22" width="1" height="30" uuid="d4ba2dad-d147-40e8-aeb7-df692ad4fc7a"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="106" y="68" width="466" height="1" uuid="4a446b4d-4fab-4fd3-8682-83c8e38f66ee"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="117" y="87" width="1" height="41" uuid="d3c8fb6c-8308-4309-819f-4d0788d13986"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="2" y="86" width="115" height="20" uuid="30d457bb-119f-4bb0-8f08-4a95d71fa02e"/>
+					<textFieldExpression><![CDATA["Revisado por:"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="2" y="109" width="115" height="19" uuid="0d638125-52bd-4034-8f4c-32b2c3fbd420"/>
+					<textFieldExpression><![CDATA["Aprobado por:"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="106" y="51" width="1" height="35" uuid="bb0d9614-27b2-41c3-82e4-a5f376b25a3f"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="2" y="52" width="78" height="20" uuid="77f9ff0e-d2c0-4f0a-a35b-7e8e489e0bf1"/>
+					<textFieldExpression><![CDATA["RESULTADO:"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="420" y="86" width="1" height="41" uuid="2b3dc336-284b-424e-b146-7dd08f940c5c"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="424" y="87" width="54" height="19" forecolor="#CCCCCC" uuid="bbf00562-fea7-4d84-9809-b5bd1f0e75cd"/>
+					<textFieldExpression><![CDATA["Firma"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="424" y="109" width="54" height="19" forecolor="#CCCCCC" uuid="6ccdf49c-8745-43fc-8926-167524ff6d21"/>
+					<textFieldExpression><![CDATA["Firma"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="108" y="52" width="50" height="16" uuid="5371ee6e-4968-4ce8-8e78-2c2e4453f84d"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["SI"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="108" y="69" width="232" height="17" uuid="af940a9b-4c65-458b-a383-fc550c0a72c0"/>
+					<textFieldExpression><![CDATA["PROYECTO CON VIABILIDAD SECTORIAL"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="401" y="68" width="1" height="18" uuid="dd71a086-cc32-476c-a10b-cdac54928e18"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="159" y="51" width="1" height="18" uuid="493361bb-dd2a-4fe7-973f-14a64290769c"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement x="163" y="52" width="405" height="17" uuid="424385cc-3ea5-437b-a36c-e9e9e862de0a"/>
+					<textFieldExpression><![CDATA["CUMPLE REQUISITOS PARA LA APROBACIÓN DEL PROYECTO"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="405" y="69" width="163" height="17" uuid="39d1d22a-07d9-4b3d-b160-5960a6b0a767"/>
+					<textFieldExpression><![CDATA[$F{estadocer}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
 	<group name="tiporeq">
 		<groupExpression><![CDATA[$F{tipo}]]></groupExpression>
@@ -458,9 +592,25 @@ WHERE
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="76" splitType="Stretch">
+			<staticText>
+				<reportElement x="-1" y="30" width="572" height="20" forecolor="#0033CC" uuid="aed8707a-ff74-4ea6-9673-f3fa495ec68a"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[www.salazardelaspalmas-nortedesantander.gov.co]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="45" width="570" height="30" uuid="414de4c8-3bd8-4863-a5e8-da0ecd92dff2"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Calle 2 # 6-25 Esquina Palacio Municipal
+Código Postal 544570 - Telefax 5668039
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="80" y="0" width="404" height="32" uuid="1835ae0e-966c-4d9d-b34d-7fbfa8349502"/>
+				<imageExpression><![CDATA["pie.jpg"]]></imageExpression>
+			</image>
+		</band>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

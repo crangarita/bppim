@@ -88,7 +88,7 @@ class Doctrine {
         $generator->setRegenerateEntityIfExists(true);
         $generator->setUpdateEntityIfExists(false);
 
-        $result = $generator->generate($metadata, ENTITIES_PATH);
+        $result = $generator->generate($metadata, ENTITIES_PATH.'..'.DS.'..'.DS.'entidadesTemp'.DS);
 
         echo "done    ";
 

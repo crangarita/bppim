@@ -39,6 +39,13 @@ function __construct() {}
      */
     private $ano;
 
+    /**
+     * @var integer
+     *
+     * @Column(name="actual", type="integer", nullable=false)
+     */
+    private $actual;
+
 
     /** 
      * Set id
@@ -108,4 +115,28 @@ function __construct() {}
     {
         return $this->ano;
     }
+
+    /** 
+     * Set actual
+     *
+     * @param int $actual
+     * @return Vigencia
+     */
+    public function setActual($actual)
+    {
+        $this->actual = $actual;
+
+        return $this;
+    }
+
+    /**
+     * Get actual
+     *
+     * @return int 
+     */
+    public function getActual()
+    {
+        return $this->actual;
+    }
+    
 }

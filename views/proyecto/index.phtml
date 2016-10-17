@@ -26,13 +26,21 @@
 										<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
 									<?php }elseif(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() == null){ ?>
 										<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
+										<!-- <a title="Concepto sectorial vacio" href="<?php echo BASE_URL . 'proyecto/conceptosectorialblanco/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial Vacio"> </span></a> -->
 									<?php } ?>
 									<?php if(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() != null){ ?>
 										<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
 										<a title="Concepto sectorial" href="<?php echo BASE_URL . 'proyecto/conceptosectorial/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial"> </span></a>
 										<?php if($dato->getCodigoBppim() == null){ ?>
 											<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
-										<?php } ?>
+										<?php }else{
+
+											?>
+												<a title="Certificación BPPIM" href="<?php echo BASE_URL . 'proyecto/certificadobppim/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-download" title="Generar Certificado BPPIM"> </span></a>
+											<?php
+
+
+										} ?>
 									<?php } ?>
 									
 								</td>
@@ -120,7 +128,7 @@
 					<div class="form-group">
 						<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Estado: </label>
 						<div class="col-xs-12 col-sm-9 col-lg-9">
-							<?php echo $this->combobox("estado", "Seleccione...", $this->estados, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
+							<?php echo $this->combobox("estado", "Seleccione...", $this->estadosConcluir, "", "getId", "getDescripcion", "class='form-control required show-tick' data-live-search='true' ","getDescripcion"); ?>
 						</div>
 					</div>
 
@@ -142,20 +150,11 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="concluirProyecto">Asignar</button>
+				<button type="button" class="btn btn-primary" id="concluirProyecto">Concluir</button>
 			</div>
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-	jQuery(document).ready(function($) {
-		$('.this-vermas').click(function(event) {
-	        event.preventDefault();
-	        motrarGet($(this),BASE.url+'<?php echo $this->_presentRequest->getControlador(); ?>/get/');
-	    });
-	});
-</script>
 
 <script type="text/javascript">
 	jQuery(document).ready(function($) {

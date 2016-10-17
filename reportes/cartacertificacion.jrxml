@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cartacertificacion" pageWidth="612" pageHeight="792" columnWidth="0" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3176a883-b768-4f84-8a02-68950d30f57f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="143"/>
+	<parameter name="entidad" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="proyecto" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  `proyecto`.`nombre` nomproyecto,
+  `proyecto`.`codigobppim`,
+  `funcionario`.`cedula`,
+  `funcionario`.`nombre` nomfuncionario,
+  `funcionario`.`cargo`,
+  `entidad`.`nombre` nomentidad,
+ CONCAT(DATE_FORMAT(now(),'%e'), ' dias del mes de ',
+ CASE MONTH(now()) WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN 8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' WHEN 12 THEN 'Diciembre' END,' de ',DATE_FORMAT(now(),'%Y'))  AS fechaactual,
+CONCAT(DATE_FORMAT(`asignacion`.`fechalimite`,'%e'), ' de ',
+ CASE MONTH(`asignacion`.`fechalimite`) WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN 8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' WHEN 12 THEN 'Diciembre' END,' de ',DATE_FORMAT(`asignacion`.`fechalimite`,'%Y'))  AS fechalimite,
+  f2.nombre as asgfuncionario,
+  f2.cargo as asgcargo,
+  municipio.nombre as nommunicipio,
+upper(municipio.nombre) as nommay,
+sector.descripcion as sector,
+programa.nombre as programa,
+plan.nombre plan,
+plan.anoini, plan.anofin,
+f3.nombre funplan, f3.cargo cargoplan
+FROM configuracion inner join funcionario as f2 on configuracion.asigna = f2.id inner join municipio on municipio.codigo = configuracion.municipio,
+  `asignacion`
+  INNER JOIN `proyecto` ON (`asignacion`.`proyecto` = `proyecto`.`id`)
+  INNER JOIN `entidad` ON (`asignacion`.`entidad` = `entidad`.`id`)
+  INNER JOIN `funcionario` ON (`entidad`.`id` = `funcionario`.`entidad`)
+inner join sector on sector.id = proyecto.sector
+inner join programa on programa.id = proyecto.programa
+inner join plan on plan.id = programa.plan,
+funcionario as f3
+WHERE
+  `asignacion`.`proyecto` = $P{proyecto} and
+f3.cargoinforme = 1]]>
+	</queryString>
+	<field name="nomproyecto" class="java.lang.String"/>
+	<field name="codigobppim" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomfuncionario" class="java.lang.String"/>
+	<field name="cargo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomentidad" class="java.lang.String"/>
+	<field name="fechaactual" class="java.lang.String"/>
+	<field name="fechalimite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="asgfuncionario" class="java.lang.String"/>
+	<field name="asgcargo" class="java.lang.String"/>
+	<field name="nommunicipio" class="java.lang.String"/>
+	<field name="nommay" class="java.lang.String"/>
+	<field name="sector" class="java.lang.String"/>
+	<field name="programa" class="java.lang.String"/>
+	<field name="plan" class="java.lang.String"/>
+	<field name="anoini" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="anofin" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="funplan" class="java.lang.String"/>
+	<field name="cargoplan" class="java.lang.String"/>
+	<pageHeader>
+		<band height="94" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="1" width="572" height="89" uuid="b058c564-f31d-4a04-8e8c-a76302b9fd26"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="421" y="8" width="151" height="20" uuid="78e1935c-fc17-48df-979c-8b778894d948"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ME-GJ-FO-002]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="38" width="74" height="20" uuid="5d8eb840-31a9-4bf7-ab5f-5b920b8bcecb"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FECHA 08/13]]></text>
+			</staticText>
+			<image>
+				<reportElement x="2" y="3" width="215" height="86" uuid="86ac659c-5e65-4b0d-a1f9-6274d962f5a4"/>
+				<imageExpression><![CDATA["logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="219" y="8" width="202" height="20" uuid="c04d9842-fc0d-4eee-a885-46e3af97d7c4"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MACROPROCESO DE APOYO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="66" width="202" height="20" uuid="ea2b6b73-413a-4d17-bf93-90be64bb6ad5"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DEL SUPERVISOR]]></text>
+			</staticText>
+			<line>
+				<reportElement x="496" y="31" width="1" height="27" uuid="397add02-694e-4f49-bdfd-ccb3d21c1ed0"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="218" y="1" width="1" height="89" uuid="c12c16d8-d259-47d3-a4a0-0b2beb41d32e"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="496" y="38" width="76" height="20" uuid="cd9d85d0-4129-41fc-9fe3-434430dce028"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN 1]]></text>
+			</staticText>
+			<line>
+				<reportElement x="421" y="1" width="1" height="89" uuid="c3a995c9-cbe0-4be0-84f5-13525df3371f"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="513" y="66" width="17" height="20" uuid="41c562c4-3607-440b-ac21-5b6e929bc389"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="66" width="71" height="20" uuid="3d5f2f32-aa36-427b-bb33-7b384ee1af11"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pagina: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="218" y="31" width="354" height="1" uuid="b6a9026a-a212-4d37-85d4-85fc70679001"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="220" y="38" width="202" height="20" uuid="b7512773-8567-43e2-8b34-43f7824b002c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROCESO GESTIÓN JURÍDICA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="219" y="59" width="353" height="1" uuid="5f793b68-0351-4dad-b439-c4c1c28f6fff"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="166" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="74" y="49" width="427" height="33" uuid="ce85dab4-965d-4422-b9e5-3fbbb76201cd"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LA SECRETARIA DE PLANEACION Y OBRAS PÚBLICAS DEL MUNICIPIO DE " + $F{nommay} + ", NORTE DE SANTANDER"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="141" width="508" height="18" uuid="8416bff3-8054-4815-9341-54e531f462a5"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CERTIFICA"]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="240">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="32" y="41" width="508" height="194" uuid="cd7e6844-1135-42d2-a265-a1a5e7e6e00d"/>
+				<textElement textAlignment="Justified">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Que en el Banco de Programas y Proyectos de Inversión Municipal se encuentra registrado el proyecto "+$F{nomproyecto}+" con el código "+$F{codigobppim}+", el cual se encuentra incluido en el Plan Desarrollo Municipal "+$F{anoini}+" - "+$F{anofin}+" \"" + $F{plan} + "\", Sector "+$F{sector}+",  Programa "+$F{programa}+". \n\n\nPara constancia se firma en el municipio de " + $F{nommunicipio} + ", a los " + $F{fechaactual} + "."]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="68">
+			<textField>
+				<reportElement x="32" y="24" width="508" height="19" uuid="5c20dd03-e64a-4997-acca-2e51477e67af"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{funplan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="43" width="508" height="22" uuid="345f105c-8dab-470b-97eb-ef01689e5728"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargoplan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="80" y="2" width="404" height="32" uuid="522240be-2b19-484d-a76a-4250f113285e"/>
+				<imageExpression><![CDATA["pie.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="-1" y="32" width="572" height="20" forecolor="#0033CC" uuid="24cf2f76-832b-4896-8629-ffa41cc80679"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[www.salazardelaspalmas-nortedesantander.gov.co]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="47" width="570" height="30" uuid="65d73f34-d647-484a-9580-1955fa2a0d97"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Calle 2 # 6-25 Esquina Palacio Municipal
+Código Postal 544570 - Telefax 5668039
+]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
