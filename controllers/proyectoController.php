@@ -19,6 +19,8 @@ class proyectoController extends Controller
         $this->_tipoRequerimiento = $this->loadModel('tipoRequerimiento');
         $this->_proyectoReq = $this->loadModel('proyectoReq');
 
+        $this->_ano = $this->loadModel('ano');        
+
         $this->_proyecto = $this->loadModel('proyecto');
         
     }
@@ -66,6 +68,7 @@ class proyectoController extends Controller
         $this->_view->estados = $this->_estado->resultList();
         $this->_view->categorias = $this->_categoria->resultList();
         $this->_view->sectores = $this->_sector->resultList();
+        $this->_view->anos = $this->_ano->resultList();
         $this->_view->vigencias = $this->_vigencia->resultList();
         $this->_view->metodo = "actualizarProyecto";
 
@@ -135,7 +138,6 @@ class proyectoController extends Controller
                 $this->_proyectoReq->save();
             }
 
-
             Session::set('mensaje','Registro Creado con Exito.');
 
         }else{
@@ -150,7 +152,9 @@ class proyectoController extends Controller
             $this->_model->getInstance()->setDimension($this->getTexto('dimension'));
             $this->_model->getInstance()->setMeses($this->getInt('meses'));
             $this->_model->getInstance()->setVigencia($this->_vigencia->get($this->getInt('vigencia')));
-            $this->_model->getInstance()->setEstado($this->_estado->get($this->getInt('estado')));
+            $this->_model->getInstance()->setAnoInicio($this->getInt('anoInicio'));
+            $this->_model->getInstance()->setAnoFin($this->getInt('anoFin'));
+            //$this->_model->getInstance()->setEstado($this->_estado->get($this->getInt('estado')));
             $this->_model->getInstance()->setCategoria($this->_categoria->get($this->getInt('categoria')));
             $this->_model->getInstance()->setSector($this->_sector->get($this->getInt('sector')));
             $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));

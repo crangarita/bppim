@@ -101,6 +101,26 @@ function __construct() {}
     /**
      * @var integer
      *
+     * @Column(name="anoinicio", type="integer", nullable=true)
+     */
+    private $anoinicio;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="anofin", type="integer", nullable=true)
+     */
+    private $anofin;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="meses", type="integer", nullable=true)
+     */
+
+    /**
+     * @var integer
+     *
      * @Column(name="meses", type="integer", nullable=true)
      */
     private $meses;
@@ -405,6 +425,52 @@ function __construct() {}
     public function getVigencia()
     {
         return $this->vigencia;
+    }
+
+    /** 
+     * Set anoinicio
+     *
+     * @param integer $anoinicio
+     * @return Proyecto
+     */
+    public function setAnoInicio($anoinicio)
+    {
+        $this->anoinicio = $anoinicio;
+    
+        return $this;
+    }
+
+    /**
+     * Get anoinicio
+     *
+     * @return integer 
+     */
+    public function getAnoInicio()
+    {
+        return $this->anoinicio;
+    }
+
+    /** 
+     * Set anofin
+     *
+     * @param integer $anofin
+     * @return Proyecto
+     */
+    public function setAnoFin($anofin)
+    {
+        $this->anofin = $anofin;
+    
+        return $this;
+    }
+
+    /**
+     * Get anofin
+     *
+     * @return integer 
+     */
+    public function getAnoFin()
+    {
+        return $this->anofin;
     }
 
     /** 
