@@ -1,4 +1,4 @@
-<div class="panel panel-primary">
+﻿<div class="panel panel-primary">
 	  <div class="panel-heading">
 			<h3 class="panel-title">Listado</h3>
 	  </div>
@@ -10,11 +10,21 @@
 							<th>Proponente</th>
 							<th>Sector</th>
 							<th>Estado</th>
-							<th class="text-center no-sort" style="width:140px">Acción</th>
+							<th class="text-center no-sort" style="width:180px">Acción</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach ($this->datos as $key => $dato) { ?>
+							<?php $temp1 = false; ?>
+							<?php $temp2 = false; ?>
+							<?php foreach ($dato->getAsignaciones() as $key => $asignacion) {
+								if($asignacion->getEstado() == 1 && $asignacion->getFechaEntrega() == null){
+									$temp1 = true;
+								}
+								if($asignacion->getEstado() == 1 && $asignacion->getFechaEntrega() != null){
+									$temp2 = true;
+								}
+							} ?>
 							<tr>
 								<td><?php echo $dato->getNombre(); ?></td>
 								<td><?php echo $dato->getProponente(); ?></td>
@@ -24,25 +34,22 @@
 									<a title="Actualizar" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>actualizar/<?php echo $dato->getId(); ?>/"><i class="fa fa-pencil-square-o"></i></a>
 									<?php if(!count($dato->getAsignaciones())){ ?>
 										<a title="Asignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-arrows"></i></a>
-									<?php }elseif(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() == null){ ?>
-										<a title="Concluir" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
+									<?php }elseif(count($dato->getAsignaciones()) && $temp1){ ?>
+										<a title="Reasignar" href="" data-id="<?php echo $dato->getId(); ?>" class="this-asignar" ><i class="fa fa-random"></i></a>
+										<a title="Concepto Viabilidad Proyecto" href="" data-id="<?php echo $dato->getId(); ?>" class="this-concluir" ><i class="fa fa-check"></i></a>
 										<!-- <a title="Concepto sectorial vacio" href="<?php echo BASE_URL . 'proyecto/conceptosectorialblanco/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial Vacio"> </span></a> -->
 									<?php } ?>
-									<?php if(count($dato->getAsignaciones()) && $dato->getAsignaciones()[0]->getFechaEntrega() != null){ ?>
+									<?php if(count($dato->getAsignaciones()) && $temp2){ ?>
 										<a title="Requerimientos" href="<?php echo BASE_URL.$this->_presentRequest->getControlador().'/'; ?>requerimientos/<?php echo $dato->getId(); ?>/"><i class="fa fa-bars"></i></a>
 										<a title="Concepto sectorial" href="<?php echo BASE_URL . 'proyecto/conceptosectorial/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial"> </span></a>
 										<?php if($dato->getCodigoBppim() == null){ ?>
-											<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')"style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
-										<?php }else{
-
-											?>
-												<a title="Certificación BPPIM" href="<?php echo BASE_URL . 'proyecto/certificadobppim/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-download" title="Generar Certificado BPPIM"> </span></a>
+											<a onclick="confirmar('<?php echo BASE_URL . 'proyecto/generarCodigo/' . $dato->getId(); ?>')" style="cursor:pointer"  ><span class="fa fa-pencil" title="Generar Codigo"> </span></a>
+										<?php }else{ ?>
+											<a title="Certificación BPPIM" href="<?php echo BASE_URL . 'proyecto/certificadobppim/' . $dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-download" title="Generar Certificado BPPIM"> </span></a>
 											<?php
-
-
 										} ?>
 									<?php } ?>
-									
+									<a onclick="confirmar('<?php echo BASE_URL. $this->_presentRequest->getControlador().'/'; ?>eliminar/<?php echo $dato->getId(); ?>')" style="cursor:pointer"><i class="fa fa-times" title="Eliminar"></i></a>
 								</td>
 							</tr>
 						<?php } ?>
@@ -150,7 +157,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="concluirProyecto">Concluir</button>
+				<button type="button" class="btn btn-primary" id="concluirProyecto">Guardar</button>
 			</div>
 		</div>
 	</div>
@@ -180,10 +187,10 @@
 	    });
 	    $("#form-asignarProyecto select[name='entidad']").change(function(event) {
 	    	var entidad = $(this).val();
-	    	$.post(BASE.url+'/proyecto/cargarFuncionario/', {entidad:entidad}, function(data) {
+		$.post(BASE.url+'/proyecto/cargarFuncionario/', {entidad:entidad}, function(data) {
 	    		var cadena = "<option value=''>Seleccione...</option>";
 					$.each(data.datos, function(index, val) {
-						 cadena = "<option value='"+val.id+"'>"+val.nombre+"</option>";
+						 cadena += "<option value='"+val.id+"'>"+val.nombre+"</option>";
 					});
 				$("#form-asignarProyecto select[name='funcionario']").html(cadena);
 				$("#form-asignarProyecto select[name='funcionario']").selectpicker("refresh");

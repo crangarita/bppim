@@ -1,4 +1,4 @@
-<div class="panel panel-primary">
+﻿<div class="panel panel-primary">
 	  <div class="panel-heading">
 			<h3 class="panel-title"><?php echo ucwords(strtolower($this->_presentRequest->getMetodo())); ?></h3>
 	  </div>
@@ -36,17 +36,17 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Valor: </label>
+		<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Sector: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="valor" class="form-control" value="" />
+					<?php echo $this->combobox("sector", "Seleccione...", $this->sectores, "", "getId", "getDescripcion", "class='form-control show-tick required' data-live-search='true' ","getDescripcion"); ?>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Sector: </label>
+<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Valor: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<?php echo $this->combobox("sector", "Seleccione...", $this->sectores, "", "getId", "getDescripcion", "class='form-control show-tick' data-live-search='true' ","getDescripcion"); ?>
+					<input name="valor" class="form-control" value="" />
 				</div>
 			</div>
 
@@ -67,16 +67,16 @@
 			</div>
 
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Radicaci&oacute;n: </label>
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >C&oacute;digo BPPIM: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="fechaRadicacion" value="<?php if($this->dato->getFechaRadicacion() != null) echo $this->dato->getFechaRadicacion()->format("d/m/Y"); ?>" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
+					<input name="codigoBPPIM" class="form-control" disabled value="<?php echo $this->dato->getCodigoBPPIM(); ?>" />
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >C&oacute;digo BPPIM: </label>
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Fecha Radicaci&oacute;n: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
-					<input name="codigoBPPIM" class="form-control" value="<?php echo $this->dato->getCodigoBPPIM(); ?>" />
+					<input name="fechaRadicacion" value="<?php if($this->dato->getFechaRadicacion() != null) echo $this->dato->getFechaRadicacion()->format("d/m/Y"); ?>" class="form-control fechadatepicker required" data-date-format="dd/mm/yyyy" placeholder="dd/mm/aaaa" />
 				</div>
 			</div>
 
@@ -109,7 +109,7 @@
 			</div>
 
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Justificacion: </label>
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Alcance: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
 					<input name="justificacion" class="form-control" value="<?php echo $this->dato->getJustificacion(); ?>" />
 				</div>
@@ -119,6 +119,17 @@
 				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Dimension: </label>
 				<div class="col-xs-12 col-sm-9 col-lg-9">
 					<input name="dimension" class="form-control" value="<?php echo $this->dato->getDimension(); ?>" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-lg-3 control-label" >Programa: </label>
+				<div class="col-xs-12 col-sm-9 col-lg-9">
+					<?php $programa = ''; ?>
+					<?php if($this->dato->getPrograma() != null){ ?>
+						<?php $programa =  $this->dato->getPrograma()->getId(); ?>
+					<?php } ?>
+					<?php echo $this->combobox("programa", "Seleccione...", $this->programas, $programa, "getId", "getNombre", "class='form-control 						show-tick data-live-search='true' ","getNombre"); ?>
 				</div>
 			</div>
 
@@ -228,8 +239,10 @@
 							<td><?php echo $dato->getFechaLimite()->format("d/m/Y"); ?></td>
 							<td><?php if($dato->getFechaEntrega() != null) echo $dato->getFechaEntrega()->format("d/m/Y"); ?></td>
 							<td class="text-center">
+							<?php if($dato->getEstado() == 1){ ?>
 								<a href="<?php echo BASE_URL . 'proyecto/cartasignacion/' . $dato->getProyecto()->getId().'/'.$dato->getEntidad()->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-file-text" title="Generar Carta de Asignacion"> </span></a>
 								<a href="<?php echo BASE_URL . 'proyecto/conceptosectorialblanco/' .  $this->dato->getId(); ?>" style="cursor:pointer"  ><span class="fa fa-book" title="Generar Concepto Sectorial Vacio"> </span></a>
+							<?php } ?>
 							</td>
 						</tr>
 					<?php } ?>

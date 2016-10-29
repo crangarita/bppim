@@ -20,6 +20,7 @@ class proyectoController extends Controller
         $this->_proyectoReq = $this->loadModel('proyectoReq');
 
         $this->_ano = $this->loadModel('ano');        
+        $this->_programa = $this->loadModel('programa');
 
         $this->_proyecto = $this->loadModel('proyecto');
         
@@ -31,7 +32,8 @@ class proyectoController extends Controller
 
     	$this->_view->titulo = ucwords($this->_presentRequest->getControlador()).' :: Listado';
 
-    	$this->_view->datos = $this->_model->resultList();
+    	//$this->_view->datos = $this->_model->dql("SELECT p FROM Entities\Proyecto p INNER JOIN Entities\Asignacion a WITH p.id = a.proyecto WHERE a.estado =:estado ORDER BY a.estado ASC", array('estado' => 1));
+        $this->_view->datos = $this->_model->resultList();
 
         $this->_view->entidades = $this->_entidad->resultList();
         $this->_view->funcionarios = $this->_funcionario->resultList();
@@ -70,6 +72,9 @@ class proyectoController extends Controller
         $this->_view->sectores = $this->_sector->resultList();
         $this->_view->anos = $this->_ano->resultList();
         $this->_view->vigencias = $this->_vigencia->resultList();
+
+        $this->_view->programas = $this->_programa->resultList();
+
         $this->_view->metodo = "actualizarProyecto";
 
         if($this->filtrarInt($id)<1){
@@ -93,6 +98,37 @@ class proyectoController extends Controller
         $this->_view->renderizar('obj', ucwords(strtolower($this->_presentRequest->getControlador())));
     }
 
+    public function eliminar($id=0)
+    {
+        $this->_model = $this->loadModel($this->_presentRequest->getControlador());
+
+        if($this->filtrarInt($id)<1){
+            Session::set('error','Registro No Encontrado.');
+            $this->redireccionar("proyecto");
+        }
+
+        $this->_model->get($this->filtrarInt($id));
+
+        if(!$this->_model->getInstance()){
+            Session::set('error','Registro No Encontrado.');
+            $this->redireccionar("proyecto");
+        }
+        $asignacion = $this->_asignacion->findBy(array('proyecto' => $id));
+        if(count($asignacion)){
+            $sql = "DELETE FROM asignacion WHERE proyecto = ".$id." ";
+            $this->_proyectoReq->exec($sql);
+        }
+        $requerimientos = $this->_proyectoReq->findBy(array('proyecto' => $id));
+        if(count($requerimientos)){
+            $sql = "DELETE FROM proyectoreq WHERE proyecto = ".$id." ";
+            $this->_proyectoReq->exec($sql);
+        }
+        $this->_model->delete();
+        Session::set('mensaje','El Proyecto se Elimin&oacute; Correctamente.');
+        $this->redireccionar("proyecto");
+    }
+
+
     private function obj($new = true)
     {
         $arrayTexto = array('nombre', 'fechaRadicacion', 'proponente');
@@ -112,9 +148,13 @@ class proyectoController extends Controller
             $radicadoFinal = "0000".($radicadoInt+1);
 
             $vigencia = $this->_vigencia->findByObject(array('actual' => 1));
+            if($vigencia == null){
+                Session::set('error','No Hay Vigencia Activa.');
+                $this->redireccionar($this->_presentRequest->getControlador().'/');
+            }
 
             $this->_model->getInstance()->setNumRadicado($radicadoFinal);
-            $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
+            $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha('fechaRadicacion')));
             $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
             $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
             $this->_model->getInstance()->setValor($this->getTexto('valor'));
@@ -142,8 +182,8 @@ class proyectoController extends Controller
 
         }else{
 
-            $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha($this->getTexto('fechaRadicacion'))));
-            $this->_model->getInstance()->setCodigobppim($this->getTexto('codigoBPPIM'));
+            $this->_model->getInstance()->setFechaRadicacion(new \DateTime($this->getFecha('fechaRadicacion')));
+            //$this->_model->getInstance()->setCodigobppim($this->getTexto('codigoBPPIM'));
             $this->_model->getInstance()->setNombre($this->getTexto('nombre'));
             $this->_model->getInstance()->setProponente($this->getTexto('proponente'));
             $this->_model->getInstance()->setValor($this->getTexto('valor'));
@@ -154,10 +194,12 @@ class proyectoController extends Controller
             $this->_model->getInstance()->setVigencia($this->_vigencia->get($this->getInt('vigencia')));
             $this->_model->getInstance()->setAnoInicio($this->getInt('anoInicio'));
             $this->_model->getInstance()->setAnoFin($this->getInt('anoFin'));
-            //$this->_model->getInstance()->setEstado($this->_estado->get($this->getInt('estado')));
             $this->_model->getInstance()->setCategoria($this->_categoria->get($this->getInt('categoria')));
             $this->_model->getInstance()->setSector($this->_sector->get($this->getInt('sector')));
             $this->_model->getInstance()->setObservacion($this->getTexto('observacion'));
+
+
+            $this->_model->getInstance()->setPrograma($this->_programa->get($this->getInt('programa')));
 
             $this->_model->update(); 
             Session::set('mensaje','Registro Actualizado con Exito.');
@@ -169,14 +211,27 @@ class proyectoController extends Controller
 
     public function asignarProyecto(){
 
-        $this->_asignacion->getInstance()->setProyecto($this->_proyecto->get($this->getInt("proyecto")));
+        $proyecto = $this->_proyecto->get($this->getInt("proyecto"));
+        $asignaciones = $this->_asignacion->findBy(array('proyecto' => $proyecto));
+        if(count($asignaciones)){
+            foreach ($asignaciones as $key => $value) {
+                $this->_asignacion = $this->loadModel('asignacion');
+                $this->_asignacion->get($value->getId());
+                $this->_asignacion->getInstance()->setEstado(0);
+                $this->_asignacion->update();
+            }
+        }
+
+        $this->_asignacion = $this->loadModel('asignacion');
+        $this->_asignacion->getInstance()->setProyecto($this->_proyecto->get($proyecto));
         $this->_asignacion->getInstance()->setEntidad($this->_entidad->get($this->getInt("entidad")));
         $this->_asignacion->getInstance()->setFuncionario($this->_funcionario->get($this->getInt("funcionario")));
         $this->_asignacion->getInstance()->setFechaAsig(new \DateTime($this->getFecha($this->getTexto('fechaAsignacion'))));
         $this->_asignacion->getInstance()->setFechaLimite(new \DateTime($this->getFecha($this->getTexto('fechaLimite'))));
         $this->_asignacion->getInstance()->setObservacion($this->getTexto("observacion"));
+        $this->_asignacion->getInstance()->setEstado(1);
 
-        $this->_proyecto->findByObject(array('id' => $this->getInt("proyecto")));
+        $this->_proyecto->findByObject(array('id' => $proyecto));
         $this->_proyecto->getInstance()->setEstado($this->_estado->get(6));
 
         try {
@@ -193,7 +248,7 @@ class proyectoController extends Controller
 
     public function concluirProyecto(){
 
-        $this->_asignacion->findByObject(array('proyecto' => $this->getInt("proyecto")));
+        $this->_asignacion->findByObject(array('proyecto' => $this->getInt("proyecto"), 'estado' => 1));
         $this->_proyecto->findByObject(array('id' => $this->getInt("proyecto")));
 
         $this->_asignacion->getInstance()->setFechaEntrega(new \DateTime($this->getFecha($this->getTexto('fechaConcluir'))));

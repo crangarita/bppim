@@ -64,10 +64,10 @@ class Proyecto extends \Entities\Proyecto implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'numRadicado', 'codigobppim', 'nombre', 'proponente', 'fechacreacion', 'valor', 'numbeneficiario', 'justificacion', 'dimension', 'vigencia', 'meses', 'fecharadicacion', 'observacion', 'categoria', 'estado', 'sector', 'asignaciones');
+            return array('__isInitialized__', 'id', 'numRadicado', 'codigobppim', 'nombre', 'proponente', 'fechacreacion', 'valor', 'numbeneficiario', 'justificacion', 'dimension', 'vigencia', 'anoinicio', 'anofin', 'meses', 'fecharadicacion', 'observacion', 'categoria', 'estado', 'sector', 'programa', 'asignaciones');
         }
 
-        return array('__isInitialized__', 'id', 'numRadicado', 'codigobppim', 'nombre', 'proponente', 'fechacreacion', 'valor', 'numbeneficiario', 'justificacion', 'dimension', 'vigencia', 'meses', 'fecharadicacion', 'observacion', 'categoria', 'estado', 'sector', 'asignaciones');
+        return array('__isInitialized__', 'id', 'numRadicado', 'codigobppim', 'nombre', 'proponente', 'fechacreacion', 'valor', 'numbeneficiario', 'justificacion', 'dimension', 'vigencia', 'anoinicio', 'anofin', 'meses', 'fecharadicacion', 'observacion', 'categoria', 'estado', 'sector', 'programa', 'asignaciones');
     }
 
     /**
@@ -422,6 +422,50 @@ class Proyecto extends \Entities\Proyecto implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setAnoInicio($anoinicio)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAnoInicio', array($anoinicio));
+
+        return parent::setAnoInicio($anoinicio);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAnoInicio()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAnoInicio', array());
+
+        return parent::getAnoInicio();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAnoFin($anofin)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAnoFin', array($anofin));
+
+        return parent::setAnoFin($anofin);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAnoFin()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAnoFin', array());
+
+        return parent::getAnoFin();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setMeses($meses)
     {
 
@@ -549,6 +593,28 @@ class Proyecto extends \Entities\Proyecto implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSector', array());
 
         return parent::getSector();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPrograma($programa = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPrograma', array($programa));
+
+        return parent::setPrograma($programa);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPrograma()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrograma', array());
+
+        return parent::getPrograma();
     }
 
     /**

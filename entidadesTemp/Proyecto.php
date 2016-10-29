@@ -1,7 +1,7 @@
 <?php
 
 
-/* Date: 02/08/2016 19:03:56 */
+/* Date: 28/10/2016 11:25:35 */
 
 namespace Entities;
 
@@ -24,13 +24,6 @@ function __construct() {}
      * @GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @Column(name="numradicado", type="string", length=5)
-     */
-    private $numRadicado;
 
     /**
      * @var string
@@ -89,12 +82,9 @@ function __construct() {}
     private $dimension;
 
     /**
-     * @var \Vigencia
+     * @var integer
      *
-     * @ManyToOne(targetEntity="Vigencia")
-     * @JoinColumns({
-     *   @JoinColumn(name="vigencia", referencedColumnName="id")
-     * })
+     * @Column(name="vigencia", type="integer", nullable=true)
      */
     private $vigencia;
 
@@ -117,12 +107,6 @@ function __construct() {}
      *
      * @Column(name="meses", type="integer", nullable=true)
      */
-
-    /**
-     * @var integer
-     *
-     * @Column(name="meses", type="integer", nullable=true)
-     */
     private $meses;
 
     /**
@@ -138,6 +122,20 @@ function __construct() {}
      * @Column(name="observacion", type="text", nullable=true)
      */
     private $observacion;
+
+    /**
+     * @var string
+     *
+     * @Column(name="numradicado", type="string", length=5, nullable=false)
+     */
+    private $numradicado;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="programa", type="integer", nullable=true)
+     */
+    private $programa;
 
     /**
      * @var \Categoria
@@ -169,20 +167,6 @@ function __construct() {}
      */
     private $sector;
 
-    /**
-     * @var \Programa
-     *
-     * @ManyToOne(targetEntity="Programa")
-     * @JoinColumns({
-     *   @JoinColumn(name="programa", referencedColumnName="id")
-     * })
-     */
-    private $programa;
-
-    /**
-     * @OneToMany(targetEntity="Asignacion", mappedBy="proyecto")
-     */
-    private $asignaciones;
 
     /** 
      * Set id
@@ -193,7 +177,7 @@ function __construct() {}
     public function setId($id)
     {
         $this->id = $id;
-
+    
         return $this;
     }
 
@@ -208,29 +192,6 @@ function __construct() {}
     }
 
     /** 
-     * Set numRadicado
-     *
-     * @param string $numRadicado
-     * @return Proyecto
-     */
-    public function setNumRadicado($numRadicado)
-    {
-        $this->numRadicado = $numRadicado;
-
-        return $this;
-    }
-
-    /**
-     * Get numRadicado
-     *
-     * @return string 
-     */
-    public function getNumRadicado()
-    {
-        return $this->numRadicado;
-    }
-
-    /** 
      * Set codigobppim
      *
      * @param string $codigobppim
@@ -239,7 +200,7 @@ function __construct() {}
     public function setCodigobppim($codigobppim)
     {
         $this->codigobppim = $codigobppim;
-
+    
         return $this;
     }
 
@@ -262,7 +223,7 @@ function __construct() {}
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -285,7 +246,7 @@ function __construct() {}
     public function setProponente($proponente)
     {
         $this->proponente = $proponente;
-
+    
         return $this;
     }
 
@@ -308,7 +269,7 @@ function __construct() {}
     public function setFechacreacion($fechacreacion)
     {
         $this->fechacreacion = $fechacreacion;
-
+    
         return $this;
     }
 
@@ -331,7 +292,7 @@ function __construct() {}
     public function setValor($valor)
     {
         $this->valor = $valor;
-
+    
         return $this;
     }
 
@@ -354,7 +315,7 @@ function __construct() {}
     public function setNumbeneficiario($numbeneficiario)
     {
         $this->numbeneficiario = $numbeneficiario;
-
+    
         return $this;
     }
 
@@ -377,7 +338,7 @@ function __construct() {}
     public function setJustificacion($justificacion)
     {
         $this->justificacion = $justificacion;
-
+    
         return $this;
     }
 
@@ -400,7 +361,7 @@ function __construct() {}
     public function setDimension($dimension)
     {
         $this->dimension = $dimension;
-
+    
         return $this;
     }
 
@@ -423,7 +384,7 @@ function __construct() {}
     public function setVigencia($vigencia)
     {
         $this->vigencia = $vigencia;
-
+    
         return $this;
     }
 
@@ -443,7 +404,7 @@ function __construct() {}
      * @param integer $anoinicio
      * @return Proyecto
      */
-    public function setAnoInicio($anoinicio)
+    public function setAnoinicio($anoinicio)
     {
         $this->anoinicio = $anoinicio;
     
@@ -455,7 +416,7 @@ function __construct() {}
      *
      * @return integer 
      */
-    public function getAnoInicio()
+    public function getAnoinicio()
     {
         return $this->anoinicio;
     }
@@ -466,7 +427,7 @@ function __construct() {}
      * @param integer $anofin
      * @return Proyecto
      */
-    public function setAnoFin($anofin)
+    public function setAnofin($anofin)
     {
         $this->anofin = $anofin;
     
@@ -478,7 +439,7 @@ function __construct() {}
      *
      * @return integer 
      */
-    public function getAnoFin()
+    public function getAnofin()
     {
         return $this->anofin;
     }
@@ -492,7 +453,7 @@ function __construct() {}
     public function setMeses($meses)
     {
         $this->meses = $meses;
-
+    
         return $this;
     }
 
@@ -515,7 +476,7 @@ function __construct() {}
     public function setFecharadicacion($fecharadicacion)
     {
         $this->fecharadicacion = $fecharadicacion;
-
+    
         return $this;
     }
 
@@ -538,7 +499,7 @@ function __construct() {}
     public function setObservacion($observacion)
     {
         $this->observacion = $observacion;
-
+    
         return $this;
     }
 
@@ -553,6 +514,52 @@ function __construct() {}
     }
 
     /** 
+     * Set numradicado
+     *
+     * @param string $numradicado
+     * @return Proyecto
+     */
+    public function setNumradicado($numradicado)
+    {
+        $this->numradicado = $numradicado;
+    
+        return $this;
+    }
+
+    /**
+     * Get numradicado
+     *
+     * @return string 
+     */
+    public function getNumradicado()
+    {
+        return $this->numradicado;
+    }
+
+    /** 
+     * Set programa
+     *
+     * @param integer $programa
+     * @return Proyecto
+     */
+    public function setPrograma($programa)
+    {
+        $this->programa = $programa;
+    
+        return $this;
+    }
+
+    /**
+     * Get programa
+     *
+     * @return integer 
+     */
+    public function getPrograma()
+    {
+        return $this->programa;
+    }
+
+    /** 
      * Set categoria
      *
      * @param \Categoria $categoria
@@ -561,7 +568,7 @@ function __construct() {}
     public function setCategoria($categoria = null)
     {
         $this->categoria = $categoria;
-
+    
         return $this;
     }
 
@@ -584,7 +591,7 @@ function __construct() {}
     public function setEstado($estado = null)
     {
         $this->estado = $estado;
-
+    
         return $this;
     }
 
@@ -607,7 +614,7 @@ function __construct() {}
     public function setSector($sector = null)
     {
         $this->sector = $sector;
-
+    
         return $this;
     }
 
@@ -620,38 +627,4 @@ function __construct() {}
     {
         return $this->sector;
     }
-
-    /** 
-     * Set programa
-     *
-     * @param \programa $programa
-     * @return Proyecto
-     */
-    public function setPrograma($programa = null)
-    {
-        $this->programa = $programa;
-
-        return $this;
-    }
-
-    /**
-     * Get programa
-     *     
-     * @return \programa 
-     */
-    public function getPrograma()
-    {
-        return $this->programa;
-    }
-
-    /**
-     * Get asignaciones
-     *
-     * @return \Asignaciones 
-     */
-    public function getAsignaciones()
-    {
-        return $this->asignaciones;
-    }
-    
 }
